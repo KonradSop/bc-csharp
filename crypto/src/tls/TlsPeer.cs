@@ -25,8 +25,11 @@ namespace Org.BouncyCastle.Tls
 
         /// <summary>Specify the timeout, in milliseconds, to use for the complete handshake process.</summary>
         /// <remarks>
-        /// NOTE: Currently only respected by DTLS protocols. Negative values are not allowed. A timeout of zero means
-        /// an infinite timeout (i.e.the handshake will never time out).
+        /// NOTE: Respected by the DTLS protocols, and by the blocking <see cref="TlsClientProtocol"/> /
+        /// <see cref="TlsServerProtocol"/> stream API. The stream API enforces it at record boundaries: a
+        /// caller-supplied input <see cref="Stream"/> has no timed-read primitive, so a peer that stalls part way
+        /// through a record blocks in the read itself, where only the transport's own read timeout can intervene.
+        /// The non-blocking API is driven by the caller's own I/O loop, which is where a deadline for it belongs.
         /// </remarks>
         /// <returns>the handshake timeout, in milliseconds.</returns>
         int GetHandshakeTimeoutMillis();
