@@ -588,6 +588,11 @@ namespace Org.BouncyCastle.Tls
                     :   server.GetServerExtensions();
 
                 state.serverExtensions = TlsExtensionsUtilities.EnsureExtensionsInitialised(sessionServerExtensions);
+
+                if (resumedSession)
+                {
+                    TlsExtensionsUtilities.RemoveStatusRequestExtensions(state.serverExtensions);
+                }
             }
 
             server.GetServerExtensionsForConnection(state.serverExtensions);

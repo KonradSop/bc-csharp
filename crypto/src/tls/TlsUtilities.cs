@@ -9,6 +9,7 @@ using Org.BouncyCastle.Asn1.Eac;
 using Org.BouncyCastle.Asn1.EdEC;
 using Org.BouncyCastle.Asn1.GM;
 using Org.BouncyCastle.Asn1.Nist;
+using Org.BouncyCastle.Asn1.Ocsp;
 using Org.BouncyCastle.Asn1.Oiw;
 using Org.BouncyCastle.Asn1.Pkcs;
 using Org.BouncyCastle.Asn1.Rosstandart;
@@ -4671,13 +4672,28 @@ namespace Org.BouncyCastle.Tls
 
             CheckTlsFeatures(serverCertificate, clientExtensions, serverExtensions);
 
-            if (!isTlsV13)
+            CertificateStatus certificateStatus;
+            CertificateStatus[] certificateStatuses;
+
+            if (isTlsV13)
+            {
+                /*
+                 * RFC 8446 4.4.2.1: there is no "certificate_status" message - each response arrived in an extension of
+                 * the CertificateEntry carrying the certificate it answers for.
+                 */
+                certificateStatuses = Read13CertificateStatuses(clientContext, serverCertificate);
+                certificateStatus = certificateStatuses.Length < 1 ? null : certificateStatuses[0];
+            }
+            else
             {
                 keyExchange.ProcessServerCertificate(serverCertificate);
+
+                certificateStatus = serverCertificateStatus;
+                certificateStatuses = SpreadCertificateStatus(serverCertificate, serverCertificateStatus);
             }
 
             clientAuthentication.NotifyServerCertificate(
-                new TlsServerCertificateImpl(serverCertificate, serverCertificateStatus));
+                new TlsServerCertificateImpl(serverCertificate, certificateStatus, certificateStatuses));
         }
 
         internal static SignatureAndHashAlgorithm GetCertSigAndHashAlg(TlsCertificate subjectCert, TlsCertificate issuerCert)
@@ -5269,6 +5285,219 @@ namespace Org.BouncyCastle.Tls
 
         internal static TlsCredentialedSigner Establish13ServerCredentials(TlsServer server) =>
             Validate13Credentials(server.GetCredentials());
+
+        /// <summary>
+        /// The OCSP staples a TLS 1.3 server attached to its Certificate message, read out per certificate: the inverse
+        /// of <see cref="Add13CertificateStatus(Certificate, CertificateStatus)"/>, which is how a BC server puts them
+        /// there.
+        /// </summary>
+        /// <remarks>
+        /// RFC 8446 sec. 4.4.2.1 carries each response in a "status_request" extension of the CertificateEntry holding
+        /// the certificate it answers for, so the result is positional - element <c>i</c> answers for certificate
+        /// <c>i</c> of the chain, null where that entry carried no staple.
+        /// <para>
+        /// A staple the client did not ask for is ignored rather than made a handshake failure, which is how this
+        /// library has always treated an unsolicited one: RFC 8446 sec. 4.2 has a server answer only the extensions the
+        /// client sent.
+        /// </para>
+        /// </remarks>
+        /// <param name="certificate">The Certificate message the server sent.</param>
+        /// <returns>
+        /// One element per certificate of <paramref name="certificate"/>, null where unstapled.
+        /// </returns>
+        /// <exception cref="IOException">
+        /// If an entry the client asked about carries something other than an RFC 6066 CertificateStatus of type ocsp;
+        /// RFC 8446 sec. 4.4.2.1 admits nothing else, so this is a decode_error exactly as it is for the TLS 1.2
+        /// "certificate_status" message.
+        /// </exception>
+        internal static CertificateStatus[] Read13CertificateStatuses(TlsContext context, Certificate certificate)
+        {
+            int certificateCount = certificate.Length;
+
+            CertificateStatus[] certificateStatuses = new CertificateStatus[certificateCount];
+
+            if (context.SecurityParameters.StatusRequestVersion < 1)
+                return certificateStatuses;
+
+            for (int i = 0; i<certificateCount; ++i)
+            {
+                var extensions = certificate.GetCertificateEntryAt(i).Extensions;
+
+                byte[] extensionData = GetExtensionData(extensions, ExtensionType.status_request);
+                if (null != extensionData)
+                {
+                    certificateStatuses[i] = TlsExtensionsUtilities.ReadStatusRequestExtension13(context,
+                        extensionData);
+                }
+            }
+
+            return certificateStatuses;
+        }
+
+        /// <summary>
+        /// The responses of a "certificate_status" message read out per certificate, so that a caller can pair each one
+        /// with the certificate it answers for whichever version was negotiated.
+        /// </summary>
+        /// <remarks>
+        /// <see cref="CertificateStatusType.ocsp"/> answers for the end-entity certificate alone, and
+        /// <see cref="CertificateStatusType.ocsp_multi"/> answers positionally (RFC 6961 sec. 2.2 - the list may be
+        /// shorter than the chain, and an element may be absent where no response is held).
+        /// </remarks>
+        /// <param name="certificate">The Certificate message the server sent.</param>
+        /// <param name="certificateStatus">The status message it sent, or null for none.</param>
+        /// <returns>One element per certificate of <paramref name="certificate"/>, null where unstapled.</returns>
+        internal static CertificateStatus[] SpreadCertificateStatus(Certificate certificate,
+            CertificateStatus certificateStatus)
+        {
+            int certificateCount = certificate.Length;
+
+            CertificateStatus[] certificateStatuses = new CertificateStatus[certificateCount];
+
+            if (null != certificateStatus && certificateCount > 0)
+            {
+                switch (certificateStatus.StatusType)
+                {
+                case CertificateStatusType.ocsp:
+                {
+                    certificateStatuses[0] = certificateStatus;
+                    break;
+                }
+                case CertificateStatusType.ocsp_multi:
+                {
+                    var ocspResponseList = certificateStatus.OcspResponseList;
+                    int count = System.Math.Min(certificateCount, ocspResponseList.Count);
+
+                    for (int i = 0; i < count; ++i)
+                    {
+                        OcspResponse ocspResponse = ocspResponseList[i];
+                        if (null != ocspResponse)
+                        {
+                            certificateStatuses[i] = new CertificateStatus(CertificateStatusType.ocsp, ocspResponse);
+                        }
+                    }
+                    break;
+                }
+                }
+            }
+
+            return certificateStatuses;
+        }
+
+        /// <summary>
+        /// Attach a TLS 1.3 server's OCSP staples to the certificate they answer for. RFC 8446 sec. 4.4.2.1: "In TLS
+        /// 1.3, the server's OCSP information is carried in an extension in the CertificateEntry containing the
+        /// associated certificate", the body of that "status_request" extension being an RFC 6066 CertificateStatus -
+        /// so a single response per entry, rather than the one "certificate_status" message TLS 1.2 sends for the whole
+        /// chain.
+        /// </summary>
+        /// <remarks>
+        /// The status a <see cref="TlsServer"/> returns is taken in the shape the 1.2 callback already defines:
+        /// <see cref="CertificateStatusType.ocsp"/> answers for the end-entity certificate alone, and
+        /// <see cref="CertificateStatusType.ocsp_multi"/> answers positionally, entry <c>i</c> of its list for
+        /// certificate <c>i</c> of the chain, with a null entry wherever there is no response. An entry the server has
+        /// already given a "status_request" extension of its own is left as it stands, so an implementation that
+        /// attaches its staples to the <see cref="Certificate"/> its credentials supply - which was the only way to do
+        /// this before - keeps working unchanged.
+        /// <para>
+        /// A response too large for the entry to carry is dropped rather than attached; see
+        /// <see cref="FitsCertificateEntry(IDictionary{int, byte[]}, byte[])"/>.
+        /// </para>
+        /// </remarks>
+        /// <param name="certificate">The Certificate message the server is about to send.</param>
+        /// <param name="certificateStatus">The status to distribute across it, or null for none.</param>
+        /// <returns>
+        /// The Certificate to send, which is <paramref name="certificate"/> itself when there is nothing to add.
+        /// </returns>
+        internal static Certificate Add13CertificateStatus(Certificate certificate, CertificateStatus certificateStatus)
+        {
+            if (null == certificateStatus || null == certificate || certificate.IsEmpty)
+                return certificate;
+
+            int certificateCount = certificate.Length;
+
+            IList<OcspResponse> ocspResponseList;
+            switch (certificateStatus.StatusType)
+            {
+            case CertificateStatusType.ocsp:
+                ocspResponseList = VectorOfOne(certificateStatus.OcspResponse);
+                break;
+            case CertificateStatusType.ocsp_multi:
+                ocspResponseList = certificateStatus.OcspResponseList;
+                break;
+            default:
+                throw new TlsFatalAlert(AlertDescription.internal_error);
+            }
+
+            if (ocspResponseList.Count > certificateCount)
+            {
+                throw new TlsFatalAlert(AlertDescription.internal_error,
+                    "'certificateStatus' has more responses than the certificate chain has certificates");
+            }
+
+            CertificateEntry[] certificateEntryList = new CertificateEntry[certificateCount];
+
+            bool anyStaple = false;
+            for (int i = 0; i < certificateCount; ++i)
+            {
+                var certificateEntry = certificate.GetCertificateEntryAt(i);
+                var extensions = certificateEntry.Extensions;
+
+                OcspResponse ocspResponse = i < ocspResponseList.Count ? ocspResponseList[i] : null;
+
+                if (null != ocspResponse &&
+                    null == TlsUtilities.GetExtensionData(extensions, ExtensionType.status_request))
+                {
+                    byte[] extensionData = TlsExtensionsUtilities.CreateStatusRequestExtension13(
+                        new CertificateStatus(CertificateStatusType.ocsp, ocspResponse));
+
+                    if (FitsCertificateEntry(extensions, extensionData))
+                    {
+                        extensions = TlsExtensionsUtilities.EnsureExtensionsInitialised(
+                            null == extensions ? null : new Dictionary<int, byte[]>(extensions));
+
+                        extensions[ExtensionType.status_request] = extensionData;
+
+                        certificateEntry = new CertificateEntry(certificateEntry.Certificate, extensions);
+                        anyStaple = true;
+                    }
+                }
+
+                certificateEntryList[i] = certificateEntry;
+            }
+
+            if (!anyStaple)
+                return certificate;
+
+            return new Certificate(certificate.CertificateType, certificate.GetCertificateRequestContext(),
+                certificateEntryList);
+        }
+
+        /// <summary>
+        /// Whether a "status_request" extension with this body can still be added to a CertificateEntry carrying
+        /// <paramref name="extensions"/>. <see cref="Certificate.Encode(TlsContext, Stream, Stream)"/> writes an
+        /// entry's whole extensions block with <see cref="WriteOpaque16(byte[], Stream)"/>, and each extension costs
+        /// its body plus four bytes of type and length, so a large enough OCSP response overflows it.
+        /// </summary>
+        /// <remarks>
+        /// Nothing bounds an OCSP response to a size that would rule this out - the responder chooses what it sends,
+        /// and it may carry a certificate chain of its own - so the one that does not fit is a staple to drop rather
+        /// than a handshake to fail. Stapling is an optimisation; a handshake proceeds without it, and failing at
+        /// encode time would turn an oversized response into a dead connection.
+        /// </remarks>
+        private static bool FitsCertificateEntry(IDictionary<int, byte[]> extensions, byte[] extensionData)
+        {
+            long length = 4L + extensionData.Length;
+
+            if (null != extensions)
+            {
+                foreach (var extension in extensions)
+                {
+                    length += 4L + extension.Value.Length;
+                }
+            }
+
+            return IsValidUint16(length);
+        }
 
         internal static void EstablishServerSigAlgs(SecurityParameters securityParameters,
             CertificateRequest certificateRequest)
@@ -5986,6 +6215,15 @@ namespace Org.BouncyCastle.Tls
                 return abstractTlsServer.PreferLocalSupportedGroups();
 
             return false;
+        }
+
+        // TODO[api] Not needed once GetCertificateStatusAt() has been added to TlsServerCertificate
+        public static CertificateStatus GetCertificateStatusAt(TlsServerCertificate tlsServerCertificate, int index)
+        {
+            if (tlsServerCertificate is TlsServerCertificateImpl tlsServerCertificateImpl)
+                return tlsServerCertificateImpl.GetCertificateStatusAt(index);
+
+            return null;
         }
     }
 }

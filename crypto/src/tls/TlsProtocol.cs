@@ -457,7 +457,11 @@ namespace Org.BouncyCastle.Tls
                         .SetPeerCertificate(securityParameters.PeerCertificate)
                         .SetPskIdentity(securityParameters.PskIdentity)
                         .SetSrpIdentity(securityParameters.SrpIdentity)
-                        // TODO Consider filtering extensions that aren't relevant to resumed sessions
+                        /*
+                         * TODO Consider filtering extensions that aren't relevant to resumed sessions.
+                         * NOTE: the "status_request" / "status_request_v2" echoes are filtered where a server replays
+                         * these on an abbreviated handshake - see TlsExtensionsUtilities.RemoveStatusRequestExtensions.
+                         */
                         .SetServerExtensions(m_serverExtensions)
                         .Build();
 

@@ -994,9 +994,12 @@ namespace Org.BouncyCastle.Tls
             securityParameters.m_extendedMasterSecret = true;
 
             /*
-             * TODO[tls13] RFC 8446 4.4.2.1. OCSP Status and SCT Extensions.
-             * 
-             * OCSP information is carried in an extension for a CertificateEntry.
+             * TODO[tls13] RFC 8446 4.4.2.1. SCT Extensions.
+             *
+             * OCSP information is carried in an extension of the CertificateEntry the certificate it answers for is in,
+             * so there is nothing to echo here and no "certificate_status" message to expect; a version of 1 records
+             * only that we asked, which is what has the entries read for staples when the Certificate message arrives.
+             * "status_request_v2" is not honoured at all - RFC 8446 sec. 4.2.1 leaves it out of TLS 1.3.
              */
             securityParameters.m_statusRequestVersion =
                 m_clientExtensions.ContainsKey(ExtensionType.status_request) ? 1 : 0;
@@ -1482,9 +1485,10 @@ namespace Org.BouncyCastle.Tls
             if (!securityParameters.IsResumedSession)
             {
                 /*
-                 * TODO[tls13] RFC 8446 4.4.2.1. OCSP Status and SCT Extensions.
-                 * 
-                 * OCSP information is carried in an extension for a CertificateEntry.
+                 * TODO[tls13] RFC 8446 4.4.2.1. SCT Extensions.
+                 *
+                 * OCSP information is carried in an extension of the CertificateEntry the certificate it answers for is
+                 * in; see the note in Process13ServerHello.
                  */
                 securityParameters.m_statusRequestVersion = m_clientExtensions.ContainsKey(ExtensionType.status_request)
                     ? 1 : 0;

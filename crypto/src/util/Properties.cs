@@ -67,6 +67,14 @@ namespace Org.BouncyCastle.Utilities
         public static readonly string FpeDisableFf1 = "Org.BouncyCastle.Fpe.Disable_Ff1";
 
         /// <summary>
+        /// The largest OCSP response, in bytes, to accept from a responder. Default 64KiB.
+        /// </summary>
+        /// <remarks>
+        /// Exceeding the limit is treated as an unreachable responder.
+        /// </remarks>
+        public static readonly string OcspMaxResponseSize = "Org.BouncyCastle.Ocsp.MaxResponseSize";
+
+        /// <summary>
         /// Upper bound on the PBKDF2 iteration count honoured when decrypting a PBES2-protected PKCS#8/PEM private key.
         /// </summary>
         /// <remarks>
