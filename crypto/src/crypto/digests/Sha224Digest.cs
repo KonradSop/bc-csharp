@@ -21,12 +21,12 @@ namespace Org.BouncyCastle.Crypto.Digests
     {
         private const int DigestLength = 28;
 
-		private uint H1, H2, H3, H4, H5, H6, H7, H8;
+        private uint H1, H2, H3, H4, H5, H6, H7, H8;
 
-		private uint[] X = new uint[64];
+        private uint[] X = new uint[64];
         private int     xOff;
 
-		/**
+        /**
          * Standard constructor
          */
         public Sha224Digest()
@@ -34,20 +34,20 @@ namespace Org.BouncyCastle.Crypto.Digests
             Reset();
         }
 
-		/**
+        /**
          * Copy constructor.  This will copy the state of the provided
          * message digest.
          */
          public Sha224Digest(
-			 Sha224Digest t)
-			 : base(t)
+             Sha224Digest t)
+             : base(t)
         {
-			CopyIn(t);
-		}
+            CopyIn(t);
+        }
 
-		private void CopyIn(Sha224Digest t)
-		{
-			base.CopyIn(t);
+        private void CopyIn(Sha224Digest t)
+        {
+            base.CopyIn(t);
 
             H1 = t.H1;
             H2 = t.H2;
@@ -62,21 +62,21 @@ namespace Org.BouncyCastle.Crypto.Digests
             xOff = t.xOff;
         }
 
-		public override string AlgorithmName
-		{
-			get { return "SHA-224"; }
-		}
-
-		public override int GetDigestSize()
-		{
-			return DigestLength;
-		}
-
-		internal override void ProcessWord(byte[] input, int inOff)
+        public override string AlgorithmName
         {
-			X[xOff] = Pack.BE_To_UInt32(input, inOff);
+            get { return "SHA-224"; }
+        }
 
-			if (++xOff == 16)
+        public override int GetDigestSize()
+        {
+            return DigestLength;
+        }
+
+        internal override void ProcessWord(byte[] input, int inOff)
+        {
+            X[xOff] = Pack.BE_To_UInt32(input, inOff);
+
+            if (++xOff == 16)
             {
                 ProcessBlock();
             }
@@ -110,7 +110,7 @@ namespace Org.BouncyCastle.Crypto.Digests
         {
             Finish();
 
-			Pack.UInt32_To_BE(H1, output, outOff);
+            Pack.UInt32_To_BE(H1, output, outOff);
             Pack.UInt32_To_BE(H2, output, outOff + 4);
             Pack.UInt32_To_BE(H3, output, outOff + 8);
             Pack.UInt32_To_BE(H4, output, outOff + 12);
@@ -118,9 +118,9 @@ namespace Org.BouncyCastle.Crypto.Digests
             Pack.UInt32_To_BE(H6, output, outOff + 20);
             Pack.UInt32_To_BE(H7, output, outOff + 24);
 
-			Reset();
+            Reset();
 
-			return DigestLength;
+            return DigestLength;
         }
 
 #if NETCOREAPP2_1_OR_GREATER || NETSTANDARD2_1_OR_GREATER
@@ -160,8 +160,8 @@ namespace Org.BouncyCastle.Crypto.Digests
             H7 = 0x64f98fa7;
             H8 = 0xbefa4fa4;
 
-			xOff = 0;
-			Array.Clear(X, 0, X.Length);
+            xOff = 0;
+            Array.Clear(X, 0, X.Length);
         }
 
         internal override void ProcessBlock()
@@ -174,7 +174,7 @@ namespace Org.BouncyCastle.Crypto.Digests
                 X[ti] = Theta1(X[ti - 2]) + X[ti - 7] + Theta0(X[ti - 15]) + X[ti - 16];
             }
 
-			//
+            //
             // set up working variables.
             //
             uint a = H1;
@@ -186,59 +186,59 @@ namespace Org.BouncyCastle.Crypto.Digests
             uint g = H7;
             uint h = H8;
 
-			int t = 0;
-			for(int i = 0; i < 8; i ++)
-			{
-				// t = 8 * i
-				h += Sum1(e) + Ch(e, f, g) + K[t] + X[t];
-				d += h;
-				h += Sum0(a) + Maj(a, b, c);
-				++t;
+            int t = 0;
+            for(int i = 0; i < 8; i ++)
+            {
+                // t = 8 * i
+                h += Sum1(e) + Ch(e, f, g) + K[t] + X[t];
+                d += h;
+                h += Sum0(a) + Maj(a, b, c);
+                ++t;
 
-				// t = 8 * i + 1
-				g += Sum1(d) + Ch(d, e, f) + K[t] + X[t];
-				c += g;
-				g += Sum0(h) + Maj(h, a, b);
-				++t;
+                // t = 8 * i + 1
+                g += Sum1(d) + Ch(d, e, f) + K[t] + X[t];
+                c += g;
+                g += Sum0(h) + Maj(h, a, b);
+                ++t;
 
-				// t = 8 * i + 2
-				f += Sum1(c) + Ch(c, d, e) + K[t] + X[t];
-				b += f;
-				f += Sum0(g) + Maj(g, h, a);
-				++t;
+                // t = 8 * i + 2
+                f += Sum1(c) + Ch(c, d, e) + K[t] + X[t];
+                b += f;
+                f += Sum0(g) + Maj(g, h, a);
+                ++t;
 
-				// t = 8 * i + 3
-				e += Sum1(b) + Ch(b, c, d) + K[t] + X[t];
-				a += e;
-				e += Sum0(f) + Maj(f, g, h);
-				++t;
+                // t = 8 * i + 3
+                e += Sum1(b) + Ch(b, c, d) + K[t] + X[t];
+                a += e;
+                e += Sum0(f) + Maj(f, g, h);
+                ++t;
 
-				// t = 8 * i + 4
-				d += Sum1(a) + Ch(a, b, c) + K[t] + X[t];
-				h += d;
-				d += Sum0(e) + Maj(e, f, g);
-				++t;
+                // t = 8 * i + 4
+                d += Sum1(a) + Ch(a, b, c) + K[t] + X[t];
+                h += d;
+                d += Sum0(e) + Maj(e, f, g);
+                ++t;
 
-				// t = 8 * i + 5
-				c += Sum1(h) + Ch(h, a, b) + K[t] + X[t];
-				g += c;
-				c += Sum0(d) + Maj(d, e, f);
-				++t;
+                // t = 8 * i + 5
+                c += Sum1(h) + Ch(h, a, b) + K[t] + X[t];
+                g += c;
+                c += Sum0(d) + Maj(d, e, f);
+                ++t;
 
-				// t = 8 * i + 6
-				b += Sum1(g) + Ch(g, h, a) + K[t] + X[t];
-				f += b;
-				b += Sum0(c) + Maj(c, d, e);
-				++t;
+                // t = 8 * i + 6
+                b += Sum1(g) + Ch(g, h, a) + K[t] + X[t];
+                f += b;
+                b += Sum0(c) + Maj(c, d, e);
+                ++t;
 
-				// t = 8 * i + 7
-				a += Sum1(f) + Ch(f, g, h) + K[t] + X[t];
-				e += a;
-				a += Sum0(b) + Maj(b, c, d);
-				++t;
-			}
+                // t = 8 * i + 7
+                a += Sum1(f) + Ch(f, g, h) + K[t] + X[t];
+                e += a;
+                a += Sum0(b) + Maj(b, c, d);
+                ++t;
+            }
 
-			H1 += a;
+            H1 += a;
             H2 += b;
             H3 += c;
             H4 += d;
@@ -251,10 +251,10 @@ namespace Org.BouncyCastle.Crypto.Digests
             // reset the offset and clean out the word buffer.
             //
             xOff = 0;
-			Array.Clear(X, 0, 16);
-		}
+            Array.Clear(X, 0, 16);
+        }
 
-		/* SHA-224 functions */
+        /* SHA-224 functions */
         private static uint Ch(uint x, uint y, uint z)
         {
             return (x & y) ^ (~x & z);
@@ -267,25 +267,25 @@ namespace Org.BouncyCastle.Crypto.Digests
 
         private static uint Sum0(uint x)
         {
-	        return ((x >> 2) | (x << 30)) ^ ((x >> 13) | (x << 19)) ^ ((x >> 22) | (x << 10));
+            return ((x >> 2) | (x << 30)) ^ ((x >> 13) | (x << 19)) ^ ((x >> 22) | (x << 10));
         }
 
         private static uint Sum1(uint x)
         {
-			return ((x >> 6) | (x << 26)) ^ ((x >> 11) | (x << 21)) ^ ((x >> 25) | (x << 7));
+            return ((x >> 6) | (x << 26)) ^ ((x >> 11) | (x << 21)) ^ ((x >> 25) | (x << 7));
         }
 
-		private static uint Theta0(uint x)
+        private static uint Theta0(uint x)
         {
-	        return ((x >> 7) | (x << 25)) ^ ((x >> 18) | (x << 14)) ^ (x >> 3);
+            return ((x >> 7) | (x << 25)) ^ ((x >> 18) | (x << 14)) ^ (x >> 3);
         }
 
         private static uint Theta1(uint x)
         {
-	        return ((x >> 17) | (x << 15)) ^ ((x >> 19) | (x << 13)) ^ (x >> 10);
+            return ((x >> 17) | (x << 15)) ^ ((x >> 19) | (x << 13)) ^ (x >> 10);
         }
 
-		/* SHA-224 Constants
+        /* SHA-224 Constants
          * (represent the first 32 bits of the fractional parts of the
          * cube roots of the first sixty-four prime numbers)
          */
@@ -296,20 +296,20 @@ namespace Org.BouncyCastle.Crypto.Digests
             0x983e5152, 0xa831c66d, 0xb00327c8, 0xbf597fc7, 0xc6e00bf3, 0xd5a79147, 0x06ca6351, 0x14292967,
             0x27b70a85, 0x2e1b2138, 0x4d2c6dfc, 0x53380d13, 0x650a7354, 0x766a0abb, 0x81c2c92e, 0x92722c85,
             0xa2bfe8a1, 0xa81a664b, 0xc24b8b70, 0xc76c51a3, 0xd192e819, 0xd6990624, 0xf40e3585, 0x106aa070,
-			0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
+            0x19a4c116, 0x1e376c08, 0x2748774c, 0x34b0bcb5, 0x391c0cb3, 0x4ed8aa4a, 0x5b9cca4f, 0x682e6ff3,
             0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208, 0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
         };
-		
-		public override IMemoable Copy()
-		{
-			return new Sha224Digest(this);
-		}
 
-		public override void Reset(IMemoable other)
-		{
-			Sha224Digest d = (Sha224Digest)other;
+        public override IMemoable Copy()
+        {
+            return new Sha224Digest(this);
+        }
 
-			CopyIn(d);
-		}
+        public override void Reset(IMemoable other)
+        {
+            Sha224Digest d = (Sha224Digest)other;
+
+            CopyIn(d);
+        }
     }
 }

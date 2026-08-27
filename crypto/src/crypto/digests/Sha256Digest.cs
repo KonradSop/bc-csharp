@@ -16,7 +16,7 @@ namespace Org.BouncyCastle.Crypto.Digests
     /// </pre>
     /// </remarks>
     public class Sha256Digest
-		: GeneralDigest
+        : GeneralDigest
     {
         private const int DigestLength = 32;
 
@@ -27,19 +27,19 @@ namespace Org.BouncyCastle.Crypto.Digests
         /// <summary>Initializes a new instance of <see cref="Sha256Digest"/>.</summary>
         public Sha256Digest()
         {
-			initHs();
+            initHs();
         }
 
         /// <summary>Initializes a new instance of <see cref="Sha256Digest"/> from an existing one.</summary>
         /// <param name="t">The digest to copy from.</param>
         public Sha256Digest(Sha256Digest t) : base(t)
         {
-			CopyIn(t);
-		}
+            CopyIn(t);
+        }
 
-		private void CopyIn(Sha256Digest t)
-		{
-			base.CopyIn(t);
+        private void CopyIn(Sha256Digest t)
+        {
+            base.CopyIn(t);
 
             H1 = t.H1;
             H2 = t.H2;
@@ -55,20 +55,20 @@ namespace Org.BouncyCastle.Crypto.Digests
         }
 
         public override string AlgorithmName
-		{
-			get { return "SHA-256"; }
-		}
+        {
+            get { return "SHA-256"; }
+        }
 
-		public override int GetDigestSize()
-		{
-			return DigestLength;
-		}
+        public override int GetDigestSize()
+        {
+            return DigestLength;
+        }
 
-		internal override void ProcessWord(byte[] input, int inOff)
-		{
-			X[xOff] = Pack.BE_To_UInt32(input, inOff);
+        internal override void ProcessWord(byte[] input, int inOff)
+        {
+            X[xOff] = Pack.BE_To_UInt32(input, inOff);
 
-			if (++xOff == 16)
+            if (++xOff == 16)
             {
                 ProcessBlock();
             }
@@ -143,14 +143,14 @@ namespace Org.BouncyCastle.Crypto.Digests
         {
             base.Reset();
 
-			initHs();
+            initHs();
 
             xOff = 0;
-			Array.Clear(X, 0, X.Length);
+            Array.Clear(X, 0, X.Length);
         }
 
-		private void initHs()
-		{
+        private void initHs()
+        {
             /* SHA-256 initial hash value
             * The first 32 bits of the fractional parts of the square roots
             * of the first eight prime numbers
@@ -163,7 +163,7 @@ namespace Org.BouncyCastle.Crypto.Digests
             H6 = 0x9b05688c;
             H7 = 0x1f83d9ab;
             H8 = 0x5be0cd19;
-		}
+        }
 
         internal override void ProcessBlock()
         {
@@ -187,59 +187,59 @@ namespace Org.BouncyCastle.Crypto.Digests
             uint g = H7;
             uint h = H8;
 
-			int t = 0;
-			for(int i = 0; i < 8; ++i)
-			{
-				// t = 8 * i
-				h += Sum1Ch(e, f, g) + K[t] + X[t];
-				d += h;
-				h += Sum0Maj(a, b, c);
-				++t;
+            int t = 0;
+            for(int i = 0; i < 8; ++i)
+            {
+                // t = 8 * i
+                h += Sum1Ch(e, f, g) + K[t] + X[t];
+                d += h;
+                h += Sum0Maj(a, b, c);
+                ++t;
 
-				// t = 8 * i + 1
-				g += Sum1Ch(d, e, f) + K[t] + X[t];
-				c += g;
-				g += Sum0Maj(h, a, b);
-				++t;
+                // t = 8 * i + 1
+                g += Sum1Ch(d, e, f) + K[t] + X[t];
+                c += g;
+                g += Sum0Maj(h, a, b);
+                ++t;
 
-				// t = 8 * i + 2
-				f += Sum1Ch(c, d, e) + K[t] + X[t];
-				b += f;
-				f += Sum0Maj(g, h, a);
-				++t;
+                // t = 8 * i + 2
+                f += Sum1Ch(c, d, e) + K[t] + X[t];
+                b += f;
+                f += Sum0Maj(g, h, a);
+                ++t;
 
-				// t = 8 * i + 3
-				e += Sum1Ch(b, c, d) + K[t] + X[t];
-				a += e;
-				e += Sum0Maj(f, g, h);
-				++t;
+                // t = 8 * i + 3
+                e += Sum1Ch(b, c, d) + K[t] + X[t];
+                a += e;
+                e += Sum0Maj(f, g, h);
+                ++t;
 
-				// t = 8 * i + 4
-				d += Sum1Ch(a, b, c) + K[t] + X[t];
-				h += d;
-				d += Sum0Maj(e, f, g);
-				++t;
+                // t = 8 * i + 4
+                d += Sum1Ch(a, b, c) + K[t] + X[t];
+                h += d;
+                d += Sum0Maj(e, f, g);
+                ++t;
 
-				// t = 8 * i + 5
-				c += Sum1Ch(h, a, b) + K[t] + X[t];
-				g += c;
-				c += Sum0Maj(d, e, f);
-				++t;
+                // t = 8 * i + 5
+                c += Sum1Ch(h, a, b) + K[t] + X[t];
+                g += c;
+                c += Sum0Maj(d, e, f);
+                ++t;
 
-				// t = 8 * i + 6
-				b += Sum1Ch(g, h, a) + K[t] + X[t];
-				f += b;
-				b += Sum0Maj(c, d, e);
-				++t;
+                // t = 8 * i + 6
+                b += Sum1Ch(g, h, a) + K[t] + X[t];
+                f += b;
+                b += Sum0Maj(c, d, e);
+                ++t;
 
-				// t = 8 * i + 7
-				a += Sum1Ch(f, g, h) + K[t] + X[t];
-				e += a;
-				a += Sum0Maj(b, c, d);
-				++t;
-			}
+                // t = 8 * i + 7
+                a += Sum1Ch(f, g, h) + K[t] + X[t];
+                e += a;
+                a += Sum0Maj(b, c, d);
+                ++t;
+            }
 
-			H1 += a;
+            H1 += a;
             H2 += b;
             H3 += c;
             H4 += d;
@@ -252,26 +252,26 @@ namespace Org.BouncyCastle.Crypto.Digests
             // reset the offset and clean out the word buffer.
             //
             xOff = 0;
-			Array.Clear(X, 0, 16);
+            Array.Clear(X, 0, 16);
         }
 
-		private static uint Sum1Ch(uint x, uint y, uint z)
-		{
-//			return Sum1(x) + Ch(x, y, z);
-	        return (((x >> 6) | (x << 26)) ^ ((x >> 11) | (x << 21)) ^ ((x >> 25) | (x << 7)))
+        private static uint Sum1Ch(uint x, uint y, uint z)
+        {
+//          return Sum1(x) + Ch(x, y, z);
+            return (((x >> 6) | (x << 26)) ^ ((x >> 11) | (x << 21)) ^ ((x >> 25) | (x << 7)))
                 //+ ((x & y) ^ ((~x) & z));
                 + (z ^ (x & (y ^ z)));
         }
 
-		private static uint Sum0Maj(uint x, uint y, uint z)
-		{
-//			return Sum0(x) + Maj(x, y, z);
-	        return (((x >> 2) | (x << 30)) ^ ((x >> 13) | (x << 19)) ^ ((x >> 22) | (x << 10)))
+        private static uint Sum0Maj(uint x, uint y, uint z)
+        {
+//          return Sum0(x) + Maj(x, y, z);
+            return (((x >> 2) | (x << 30)) ^ ((x >> 13) | (x << 19)) ^ ((x >> 22) | (x << 10)))
                 //+ ((x & y) ^ (x & z) ^ (y & z));
                 + ((x & y) | (z & (x ^ y)));
         }
 
-//		/* SHA-256 functions */
+//      /* SHA-256 functions */
 //        private static uint Ch(uint x, uint y, uint z)
 //        {
 //            return (x & y) ^ ((~x) & z);
@@ -286,22 +286,22 @@ namespace Org.BouncyCastle.Crypto.Digests
 //
 //        private static uint Sum0(uint x)
 //        {
-//	        return ((x >> 2) | (x << 30)) ^ ((x >> 13) | (x << 19)) ^ ((x >> 22) | (x << 10));
+//          return ((x >> 2) | (x << 30)) ^ ((x >> 13) | (x << 19)) ^ ((x >> 22) | (x << 10));
 //        }
 //
 //        private static uint Sum1(uint x)
 //        {
-//	        return ((x >> 6) | (x << 26)) ^ ((x >> 11) | (x << 21)) ^ ((x >> 25) | (x << 7));
+//          return ((x >> 6) | (x << 26)) ^ ((x >> 11) | (x << 21)) ^ ((x >> 25) | (x << 7));
 //        }
 
         private static uint Theta0(uint x)
         {
-	        return ((x >> 7) | (x << 25)) ^ ((x >> 18) | (x << 14)) ^ (x >> 3);
+            return ((x >> 7) | (x << 25)) ^ ((x >> 18) | (x << 14)) ^ (x >> 3);
         }
 
         private static uint Theta1(uint x)
         {
-	        return ((x >> 17) | (x << 15)) ^ ((x >> 19) | (x << 13)) ^ (x >> 10);
+            return ((x >> 17) | (x << 15)) ^ ((x >> 19) | (x << 13)) ^ (x >> 10);
         }
 
         /* SHA-256 Constants
@@ -310,7 +310,7 @@ namespace Org.BouncyCastle.Crypto.Digests
         */
         private static readonly uint[] K = {
             0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5,
-			0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
+            0x3956c25b, 0x59f111f1, 0x923f82a4, 0xab1c5ed5,
             0xd807aa98, 0x12835b01, 0x243185be, 0x550c7dc3,
             0x72be5d74, 0x80deb1fe, 0x9bdc06a7, 0xc19bf174,
             0xe49b69c1, 0xefbe4786, 0x0fc19dc6, 0x240ca1cc,
@@ -326,17 +326,17 @@ namespace Org.BouncyCastle.Crypto.Digests
             0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
             0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
         };
-		
-		public override IMemoable Copy()
-		{
-			return new Sha256Digest(this);
-		}
 
-		public override void Reset(IMemoable other)
-		{
-			Sha256Digest d = (Sha256Digest)other;
+        public override IMemoable Copy()
+        {
+            return new Sha256Digest(this);
+        }
 
-			CopyIn(d);
-		}
+        public override void Reset(IMemoable other)
+        {
+            Sha256Digest d = (Sha256Digest)other;
+
+            CopyIn(d);
+        }
     }
 }
