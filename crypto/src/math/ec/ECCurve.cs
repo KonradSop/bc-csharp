@@ -32,53 +32,49 @@ namespace Org.BouncyCastle.Math.EC
 
         public class Config
         {
-            protected ECCurve outer;
-            protected int coord;
-            protected ECEndomorphism endomorphism;
-            protected ECMultiplier multiplier;
+            private readonly ECCurve m_outer;
+            private int m_coord;
+            private ECEndomorphism m_endomorphism;
+            private ECMultiplier m_multiplier;
 
             internal Config(ECCurve outer, int coord, ECEndomorphism endomorphism, ECMultiplier multiplier)
             {
-                this.outer = outer;
-                this.coord = coord;
-                this.endomorphism = endomorphism;
-                this.multiplier = multiplier;
+                m_outer = outer;
+                m_coord = coord;
+                m_endomorphism = endomorphism;
+                m_multiplier = multiplier;
             }
 
             public Config SetCoordinateSystem(int coord)
             {
-                this.coord = coord;
+                m_coord = coord;
                 return this;
             }
 
             public Config SetEndomorphism(ECEndomorphism endomorphism)
             {
-                this.endomorphism = endomorphism;
+                m_endomorphism = endomorphism;
                 return this;
             }
 
             public Config SetMultiplier(ECMultiplier multiplier)
             {
-                this.multiplier = multiplier;
+                m_multiplier = multiplier;
                 return this;
             }
 
             public ECCurve Create()
             {
-                if (!outer.SupportsCoordinateSystem(coord))
-                {
+                if (!m_outer.SupportsCoordinateSystem(m_coord))
                     throw new InvalidOperationException("unsupported coordinate system");
-                }
 
-                ECCurve c = outer.CloneCurve();
-                if (c == outer)
-                {
+                ECCurve c = m_outer.CloneCurve();
+                if (c == m_outer)
                     throw new InvalidOperationException("implementation returned current curve");
-                }
 
-                c.m_coord = coord;
-                c.m_endomorphism = endomorphism;
-                c.m_multiplier = multiplier;
+                c.m_coord = m_coord;
+                c.m_endomorphism = m_endomorphism;
+                c.m_multiplier = m_multiplier;
 
                 return c;
             }
@@ -128,10 +124,8 @@ namespace Org.BouncyCastle.Math.EC
             return p;
         }
 
-        public virtual ECPoint CreatePoint(BigInteger x, BigInteger y)
-        {
-            return CreateRawPoint(FromBigInteger(x), FromBigInteger(y));
-        }
+        public virtual ECPoint CreatePoint(BigInteger x, BigInteger y) =>
+            CreateRawPoint(FromBigInteger(x), FromBigInteger(y));
 
         protected abstract ECCurve CloneCurve();
 
@@ -280,16 +274,16 @@ namespace Org.BouncyCastle.Math.EC
         {
             CheckPoints(points, off, len);
 
-            switch (this.CoordinateSystem)
+            switch (CoordinateSystem)
             {
-                case ECCurve.COORD_AFFINE:
-                case ECCurve.COORD_LAMBDA_AFFINE:
-                {
-                    if (iso != null)
-                        throw new ArgumentException("not valid for affine coordinates", nameof(iso));
+            case ECCurve.COORD_AFFINE:
+            case ECCurve.COORD_LAMBDA_AFFINE:
+            {
+                if (iso != null)
+                    throw new ArgumentException("not valid for affine coordinates", nameof(iso));
 
-                    return;
-                }
+                return;
+            }
             }
 
             /*
@@ -991,19 +985,19 @@ namespace Org.BouncyCastle.Math.EC
                         z = z.AddOne();
                     }
 
-                    switch (this.CoordinateSystem)
+                    switch (CoordinateSystem)
                     {
-                        case COORD_LAMBDA_AFFINE:
-                        case COORD_LAMBDA_PROJECTIVE:
-                        {
-                            yp = z.Add(xp);
-                            break;
-                        }
-                        default:
-                        {
-                            yp = z.Multiply(xp);
-                            break;
-                        }
+                    case COORD_LAMBDA_AFFINE:
+                    case COORD_LAMBDA_PROJECTIVE:
+                    {
+                        yp = z.Add(xp);
+                        break;
+                    }
+                    default:
+                    {
+                        yp = z.Multiply(xp);
+                        break;
+                    }
                     }
                 }
             }
@@ -1239,7 +1233,7 @@ namespace Org.BouncyCastle.Math.EC
 
         private F2mCurve(F2mFieldData f2mFieldData, ECFieldElement a, ECFieldElement b, BigInteger order,
             BigInteger cofactor)
-            : base(f2mFieldData.m, f2mFieldData.K1, f2mFieldData.K2, f2mFieldData.K3)
+            : base(f2mFieldData._m, f2mFieldData.K1, f2mFieldData.K2, f2mFieldData.K3)
         {
             m_f2mFieldData = f2mFieldData;
 
@@ -1295,7 +1289,7 @@ namespace Org.BouncyCastle.Math.EC
 
         public override ECPoint Infinity => m_infinity;
 
-        public int M => m_f2mFieldData.m;
+        public int M => m_f2mFieldData._m;
 
         /// <summary>Return true if curve uses a Trinomial basis.</summary>
         public bool IsTrinomial() => K2 == 0 && K3 == 0;
@@ -1316,8 +1310,8 @@ namespace Org.BouncyCastle.Math.EC
                 for (int i = 0; i < len; ++i)
                 {
                     ECPoint p = points[off + i];
-                    BinPolys.Copy(FE_LONGS, ((F2mFieldElement)p.RawXCoord).x, 0, table, pos); pos += FE_LONGS;
-                    BinPolys.Copy(FE_LONGS, ((F2mFieldElement)p.RawYCoord).x, 0, table, pos); pos += FE_LONGS;
+                    BinPolys.Copy(FE_LONGS, ((F2mFieldElement)p.RawXCoord).m_x, 0, table, pos); pos += FE_LONGS;
+                    BinPolys.Copy(FE_LONGS, ((F2mFieldElement)p.RawYCoord).m_x, 0, table, pos); pos += FE_LONGS;
                 }
             }
 
