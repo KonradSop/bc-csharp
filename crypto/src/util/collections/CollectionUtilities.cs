@@ -183,5 +183,17 @@ namespace Org.BouncyCastle.Utilities.Collections
             return true;
 #endif
         }
+
+        // TODO[api] Make extension method
+        public static IEnumerable<T> Where<T>(IEnumerable<T> source, Func<T, bool> predicate)
+        {
+            foreach (var element in source)
+            {
+                if (predicate(element))
+                {
+                    yield return element;
+                }
+            }
+        }
     }
 }
