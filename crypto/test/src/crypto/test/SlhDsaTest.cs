@@ -11,6 +11,7 @@ using Org.BouncyCastle.Pkcs;
 using Org.BouncyCastle.Pqc.Crypto.Tests;
 using Org.BouncyCastle.Security;
 using Org.BouncyCastle.Utilities;
+using Org.BouncyCastle.Utilities.Collections;
 using Org.BouncyCastle.Utilities.Encoders;
 using Org.BouncyCastle.Utilities.Test;
 using Org.BouncyCastle.X509;
@@ -110,6 +111,10 @@ namespace Org.BouncyCastle.Crypto.Tests
 
         private static readonly IEnumerable<SlhDsaParameters> ParametersValues = Parameters.Values;
 
+        // The ACVP keyGen file covers only the pure (non-pre-hash) parameter sets.
+        private static readonly IEnumerable<SlhDsaParameters> KeyGenParametersValues =
+            CollectionUtilities.Where(Parameters.Values, p => !p.IsPreHash);
+
         private static readonly string[] KeyGenAcvpFiles =
         {
             "keyGen_SLH-DSA-SHA2-128s.txt",
@@ -186,12 +191,18 @@ namespace Org.BouncyCastle.Crypto.Tests
                 (name, data) => ImplContext(name, data, ContextSlowFileParameters[name]));
         }
 
-        [Test]
-        [Parallelizable]
-        public void KeyGen()
+        // One test case per parameter set so the (expensive) "s" sets run in parallel rather than serially.
+        [TestCaseSource(nameof(KeyGenParametersValues))]
+        [Parallelizable(ParallelScope.All)]
+        public void KeyGen(SlhDsaParameters parameters)
         {
-            RunTestVectors("pqc/crypto/slhdsa", "SLH-DSA-keyGen.txt",
-                (name, data) => ImplKeyGen(name, data, Parameters[data["parameterSet"]]));
+            RunTestVectors("pqc/crypto/slhdsa", "SLH-DSA-keyGen.txt", (name, data) =>
+            {
+                if (string.Equals(parameters.Name, data["parameterSet"], StringComparison.OrdinalIgnoreCase))
+                {
+                    ImplKeyGen(name, data, parameters);
+                }
+            });
         }
 
         [TestCaseSource(nameof(KeyGenAcvpFiles))]
