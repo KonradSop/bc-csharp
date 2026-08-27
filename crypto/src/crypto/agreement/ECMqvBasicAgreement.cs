@@ -70,7 +70,7 @@ namespace Org.BouncyCastle.Crypto.Agreement
 
             BigInteger hs = parameters.H.Multiply(s).Mod(n);
 
-            return ECAlgorithms.SumOfTwoMultiplies(q1v, Q2VBar.Multiply(hs).Mod(n), q2v, hs);
+            return ECAlgorithms.SumOfTwoMultipliesSecret(q1v, Q2VBar.Multiply(hs).Mod(n), q2v, hs);
         }
     }
 }
