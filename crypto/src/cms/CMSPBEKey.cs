@@ -11,6 +11,10 @@ using Org.BouncyCastle.Utilities;
 
 namespace Org.BouncyCastle.Cms
 {
+	/// <summary>
+	/// Base class for password-based keys used with CMS enveloped-data recipients. Passed to
+	/// <see cref="CmsEnvelopedGenerator.AddPasswordRecipient"/>.
+	/// </summary>
 	public abstract class CmsPbeKey
 		// TODO Create an equivalent interface somewhere?
 		//	: PBEKey
@@ -20,6 +24,10 @@ namespace Org.BouncyCastle.Cms
 		internal readonly byte[]	salt;
 		internal readonly int		iterationCount;
 
+		/// <summary>Creates a PBE key from explicit password, salt, and iteration count.</summary>
+		/// <param name="password">The password characters.</param>
+		/// <param name="salt">The PBKDF2 salt.</param>
+		/// <param name="iterationCount">The PBKDF2 iteration count.</param>
 		public CmsPbeKey(
 			char[]	password,
 			byte[]	salt,
@@ -30,6 +38,10 @@ namespace Org.BouncyCastle.Cms
 			this.iterationCount = iterationCount;
 		}
 
+		/// <summary>Creates a PBE key from a password and PBKDF2 AlgorithmIdentifier.</summary>
+		/// <param name="password">The password characters.</param>
+		/// <param name="keyDerivationAlgorithm">The PBKDF2 algorithm identifier.</param>
+		/// <exception cref="ArgumentException">The key derivation algorithm is not PBKDF2.</exception>
 		public CmsPbeKey(
 			char[]				password,
 			AlgorithmIdentifier keyDerivationAlgorithm)
@@ -49,6 +61,7 @@ namespace Org.BouncyCastle.Cms
 		}
 
 #if NETCOREAPP2_1_OR_GREATER || NETSTANDARD2_1_OR_GREATER
+        /// <summary>Creates a PBE key from explicit password, salt, and iteration count.</summary>
         public CmsPbeKey(ReadOnlySpan<char> password, ReadOnlySpan<byte> salt, int iterationCount)
         {
 			this.password = password.ToArray();
@@ -56,6 +69,8 @@ namespace Org.BouncyCastle.Cms
             this.iterationCount = iterationCount;
         }
 
+        /// <summary>Creates a PBE key from a password and PBKDF2 AlgorithmIdentifier.</summary>
+        /// <exception cref="ArgumentException">The key derivation algorithm is not PBKDF2.</exception>
         public CmsPbeKey(ReadOnlySpan<char> password, AlgorithmIdentifier keyDerivationAlgorithm)
         {
             if (!keyDerivationAlgorithm.Algorithm.Equals(PkcsObjectIdentifiers.IdPbkdf2))
@@ -79,26 +94,32 @@ namespace Org.BouncyCastle.Cms
 			Arrays.ZeroMemory(this.password);
 		}
 
+		/// <summary>Gets a copy of the PBKDF2 salt.</summary>
 		public byte[] Salt
 		{
 			get { return Arrays.Clone(salt); }
 		}
 
+		/// <summary>Gets the PBKDF2 iteration count.</summary>
 		public int IterationCount
 		{
 			get { return iterationCount; }
 		}
 
+		/// <summary>Gets the key algorithm name (<c>PKCS5S2</c>).</summary>
 		public string Algorithm
 		{
 			get { return "PKCS5S2"; }
 		}
 
+		/// <summary>Gets the encoding format name (<c>RAW</c>).</summary>
 		public string Format
 		{
 			get { return "RAW"; }
 		}
 
+		/// <summary>Returns null; raw encoding is not supported.</summary>
+		/// <returns>Always null.</returns>
 		public byte[] GetEncoded()
 		{
 			return null;

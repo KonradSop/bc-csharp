@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Org.BouncyCastle.Cms
 {
+    /// <summary>Exception thrown when a CMS signed or authenticated attribute table cannot be generated.</summary>
     [Serializable]
     public class CmsAttributeTableGenerationException
         : CmsException
