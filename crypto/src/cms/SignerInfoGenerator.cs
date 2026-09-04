@@ -5,8 +5,9 @@ using Org.BouncyCastle.X509;
 namespace Org.BouncyCastle.Cms
 {
     /// <summary>
-    /// Pre-configured CMS signer used with <see cref="CmsSignedDataGenerator.AddSignerInfoGenerator"/>. Build
-    /// instances with <see cref="SignerInfoGeneratorBuilder"/>.
+    /// Pre-configured CMS <c>SignerInfo</c> for signed-data creation. Build with
+    /// <see cref="SignerInfoGeneratorBuilder"/>, then pass to
+    /// <see cref="CmsSignedDataGenerator.AddSignerInfoGenerator"/>.
     /// </summary>
     public class SignerInfoGenerator
     {
@@ -56,18 +57,18 @@ namespace Org.BouncyCastle.Cms
         public CmsAttributeTableGenerator UnsignedAttributeTableGenerator => m_unsignedGen;
     }
 
-    /// <summary>
-    /// Builds <see cref="SignerInfoGenerator"/> instances for CMS SignedData creation. Use
-    /// <see cref="SetDirectSignature"/> for a signature over the raw content, or attribute generators for the
-    /// standard signed-attribute workflow.
-    /// </summary>
+    /// <summary>Builds <see cref="SignerInfoGenerator"/> instances for CMS SignedData creation.</summary>
+    /// <remarks>
+    /// Use <see cref="SetDirectSignature"/> for a signature over the raw content. Otherwise, a null
+    /// signed-attribute generator selects <see cref="DefaultSignedAttributeTableGenerator"/>.
+    /// </remarks>
     public class SignerInfoGeneratorBuilder
     {
         private bool m_directSignature;
         private CmsAttributeTableGenerator m_signedGen;
         private CmsAttributeTableGenerator m_unsignedGen;
 
-        /// <summary>Creates a builder with default signed-attribute generation.</summary>
+        /// <summary>Initialises a builder with default signed-attribute generation.</summary>
         public SignerInfoGeneratorBuilder()
         {
         }
