@@ -53,6 +53,7 @@ namespace Org.BouncyCastle.Crypto.Generators
             }
         }
 
+        /// <summary>Create a new <see cref="OpenBsdBCrypt"/>.</summary>
         public OpenBsdBCrypt()
         {
         }
