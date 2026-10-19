@@ -160,16 +160,19 @@ namespace Org.BouncyCastle.Crypto.Macs
             }
         }
 
+        /// <inheritdoc/>
         public string AlgorithmName
         {
             get { return cipher == null ? "Poly1305" : "Poly1305-" + cipher.AlgorithmName; }
         }
 
+        /// <inheritdoc/>
         public int GetMacSize()
         {
             return BlockSize;
         }
 
+        /// <inheritdoc/>
         public void Update(byte input)
         {
             currentBlock[currentBlockOffset++] = input;
@@ -184,6 +187,7 @@ namespace Org.BouncyCastle.Crypto.Macs
             }
         }
 
+        /// <inheritdoc/>
         public void BlockUpdate(byte[] input, int inOff, int len)
         {
             Check.DataLength(input, inOff, len, "input buffer too short");
@@ -220,6 +224,7 @@ namespace Org.BouncyCastle.Crypto.Macs
         }
 
 #if NETCOREAPP2_1_OR_GREATER || NETSTANDARD2_1_OR_GREATER
+        /// <inheritdoc/>
         public void BlockUpdate(ReadOnlySpan<byte> input)
         {
             int available = BlockSize - currentBlockOffset;
@@ -287,6 +292,7 @@ namespace Org.BouncyCastle.Crypto.Macs
             h1 += h0 >> 26; h0 &= 0x3ffffff;
         }
 
+        /// <inheritdoc/>
         public int DoFinal(byte[] output, int outOff)
         {
 #if NETCOREAPP2_1_OR_GREATER || NETSTANDARD2_1_OR_GREATER
@@ -336,6 +342,7 @@ namespace Org.BouncyCastle.Crypto.Macs
         }
 
 #if NETCOREAPP2_1_OR_GREATER || NETSTANDARD2_1_OR_GREATER
+        /// <inheritdoc/>
         public int DoFinal(Span<byte> output)
         {
             Check.OutputLength(output, BlockSize, "output buffer too short.");
@@ -381,6 +388,7 @@ namespace Org.BouncyCastle.Crypto.Macs
         }
 #endif
 
+        /// <inheritdoc/>
         public void Reset()
         {
             currentBlockOffset = 0;
