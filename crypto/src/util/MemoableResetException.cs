@@ -14,21 +14,30 @@ namespace Org.BouncyCastle.Utilities
     public class MemoableResetException
         : InvalidCastException
     {
+        /// <summary>Create a new <see cref="MemoableResetException"/>.</summary>
         public MemoableResetException()
             : base()
         {
         }
 
+        /// <summary>Create a new <see cref="MemoableResetException"/>.</summary>
+        /// <param name="message">The message.</param>
         public MemoableResetException(string message)
             : base(message)
         {
         }
 
+        /// <summary>Create a new <see cref="MemoableResetException"/>.</summary>
+        /// <param name="message">The message.</param>
+        /// <param name="innerException">The inner exception.</param>
         public MemoableResetException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
 
+        /// <summary>Create a new <see cref="MemoableResetException"/>.</summary>
+        /// <param name="info">The info.</param>
+        /// <param name="context">The context.</param>
         protected MemoableResetException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
