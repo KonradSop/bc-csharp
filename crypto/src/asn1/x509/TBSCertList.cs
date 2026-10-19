@@ -79,6 +79,7 @@ namespace Org.BouncyCastle.Asn1.X509
         /// <summary>Gets the revocation date.</summary>
         public Time RevocationDate => m_revocationDate;
 
+        /// <summary>Gets the extensions.</summary>
         public X509Extensions Extensions => m_crlEntryExtensions;
 
         /// <inheritdoc/>
@@ -244,6 +245,7 @@ namespace Org.BouncyCastle.Asn1.X509
             return new RevokedCertificatesEnumeration(m_revokedCertificates);
         }
 
+        /// <summary>Gets the extensions.</summary>
         public X509Extensions Extensions => m_crlExtensions;
 
         /// <inheritdoc/>
