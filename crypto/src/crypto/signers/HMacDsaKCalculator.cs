@@ -34,16 +34,19 @@ namespace Org.BouncyCastle.Crypto.Signers
             this.K = new byte[macSize];
         }
 
+        /// <inheritdoc/>
         public virtual bool IsDeterministic
         {
             get { return true; }
         }
 
+        /// <inheritdoc/>
         public virtual void Init(BigInteger n, SecureRandom random)
         {
             throw new InvalidOperationException("Operation not supported");
         }
 
+        /// <inheritdoc/>
         public void Init(BigInteger n, BigInteger d, byte[] message)
         {
             this.n = n;
@@ -104,6 +107,7 @@ namespace Org.BouncyCastle.Crypto.Signers
             hMac.DoFinal(V, 0);
         }
 
+        /// <inheritdoc/>
         public virtual BigInteger NextK()
         {
             byte[] t = new byte[BigIntegers.GetUnsignedByteLength(n)];
