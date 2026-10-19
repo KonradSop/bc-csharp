@@ -30,8 +30,8 @@ namespace Org.BouncyCastle.Cmp
         }
 
         /// <summary>Create a new <see cref="CmpException"/>.</summary>
-        /// <param name="info">The info.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="info">The serialization information.</param>
+        /// <param name="context">The streaming context.</param>
         protected CmpException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
