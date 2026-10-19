@@ -29,6 +29,9 @@ namespace Org.BouncyCastle.Crmf
         {
         }
 
+        /// <summary>Create a new <see cref="CrmfException"/>.</summary>
+        /// <param name="info">The info.</param>
+        /// <param name="context">The context.</param>
         protected CrmfException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
