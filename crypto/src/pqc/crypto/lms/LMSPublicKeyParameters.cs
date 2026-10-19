@@ -14,6 +14,11 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
         private byte[] I;
         private byte[] T1;
 
+        /// <summary>Create a new <see cref="LmsPublicKeyParameters"/>.</summary>
+        /// <param name="parameterSet">The parameter set.</param>
+        /// <param name="lmOtsType">The lm ots type.</param>
+        /// <param name="T1">The t 1.</param>
+        /// <param name="I">The i.</param>
         public LmsPublicKeyParameters(LMSigParameters parameterSet, LMOtsParameters lmOtsType, byte[] T1, byte[] I)
             : base(false)
         {
@@ -23,6 +28,11 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             this.T1 = Arrays.Clone(T1);
         }
 
+        /// <summary>Return an <see cref="LmsPublicKeyParameters"/> from the given object.</summary>
+        /// <param name="src">
+        /// An <see cref="LmsPublicKeyParameters"/>, an object from which one can be constructed, or null.
+        /// </param>
+        /// <returns>The <see cref="LmsPublicKeyParameters"/>, or null if <paramref name="src"/> is null.</returns>
         public static LmsPublicKeyParameters GetInstance(object src)
         {
             if (src is LmsPublicKeyParameters lmsPublicKeyParameters)
@@ -60,22 +70,29 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
         internal static LmsPublicKeyParameters Parse(byte[] buf, int off, int len) =>
             BinaryReaders.Parse(Parse, buf, off, len, "LMS public key");
 
+        /// <inheritdoc/>
         public override byte[] GetEncoded() => ToByteArray();
 
+        /// <summary>Return the sig parameters.</summary>
         public LMSigParameters GetSigParameters() => parameterSet;
 
+        /// <summary>Return the ots parameters.</summary>
         public LMOtsParameters GetOtsParameters() => lmOtsType;
 
+        /// <summary>Return the lms parameters.</summary>
         public LmsParameters GetLmsParameters() => new LmsParameters(GetSigParameters(), GetOtsParameters());
 
+        /// <summary>Return the t 1.</summary>
         public byte[] GetT1() => Arrays.Clone(T1);
 
         internal bool MatchesT1(byte[] sig) => Arrays.FixedTimeEquals(T1, sig);
 
+        /// <summary>Return the i.</summary>
         public byte[] GetI() => Arrays.Clone(I);
 
         internal byte[] RefI() => I;
 
+        /// <inheritdoc/>
         // TODO[api] Fix parameter name
         public override bool Equals(object o)
         {
@@ -89,6 +106,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
                 && Arrays.AreEqual(this.T1, that.T1);
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             int result = parameterSet.GetHashCode();
@@ -108,6 +126,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
                 .Build();
         }
 
+        /// <inheritdoc/>
         public LmsContext GenerateLmsContext(byte[] signature)
         {
             try
@@ -133,6 +152,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
                 .CreateOtsContext(S);
         }
 
+        /// <inheritdoc/>
         public bool Verify(LmsContext context) => Lms.VerifySignature(this, context);
     }
 }

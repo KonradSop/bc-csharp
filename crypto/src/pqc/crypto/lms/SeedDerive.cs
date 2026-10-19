@@ -13,6 +13,10 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
         private readonly byte[] m_masterSeed;
         private readonly IDigest m_digest;
 
+        /// <summary>Create a new <see cref="SeedDerive"/>.</summary>
+        /// <param name="I">The i.</param>
+        /// <param name="masterSeed">The master seed.</param>
+        /// <param name="digest">The digest.</param>
         public SeedDerive(byte[] I, byte[] masterSeed, IDigest digest)
         {
             m_I = I;
@@ -20,12 +24,16 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             m_digest = digest;
         }
 
+        /// <summary>Return the i.</summary>
         public byte[] GetI() => Arrays.Clone(m_I);
 
+        /// <summary>Return the master seed.</summary>
         public byte[] GetMasterSeed() => Arrays.Clone(m_masterSeed);
 
+        /// <summary>Gets or sets the j.</summary>
         public int J { get; set; }
 
+        /// <summary>Gets or sets the q.</summary>
         public int Q { get; set; }
 
         public byte[] DeriveSeed(bool incJ, byte[] target, int offset)
@@ -70,9 +78,11 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             return target;
         }
 
+        /// <summary>Gets the i.</summary>
         [Obsolete("Use 'GetI' instead")]
         public byte[] I => m_I;
 
+        /// <summary>Gets the master seed.</summary>
         [Obsolete("Use 'GetMasterSeed' instead")]
         public byte[] MasterSeed => m_masterSeed;
     }

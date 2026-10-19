@@ -20,6 +20,12 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
 
         private HssPublicKeyParameters m_publicKey;
 
+        /// <summary>Create a new <see cref="HssPrivateKeyParameters"/>.</summary>
+        /// <param name="l">The l.</param>
+        /// <param name="keys">The keys.</param>
+        /// <param name="sig">The signature.</param>
+        /// <param name="index">The index.</param>
+        /// <param name="indexLimit">The index limit.</param>
         public HssPrivateKeyParameters(int l, IList<LmsPrivateKeyParameters> keys, IList<LmsSignature> sig, long index,
             long indexLimit)
             : base(true)
@@ -53,6 +59,11 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
         public static HssPrivateKeyParameters GetInstance(byte[] privEnc, byte[] pubEnc) =>
             Parse(privEnc, 0, privEnc.Length, HssPublicKeyParameters.Parse(pubEnc));
 
+        /// <summary>Return an <see cref="HssPrivateKeyParameters"/> from the given object.</summary>
+        /// <param name="src">
+        /// An <see cref="HssPrivateKeyParameters"/>, an object from which one can be constructed, or null.
+        /// </param>
+        /// <returns>The <see cref="HssPrivateKeyParameters"/>, or null if <paramref name="src"/> is null.</returns>
         public static HssPrivateKeyParameters GetInstance(object src)
         {
             if (src is HssPrivateKeyParameters hssPrivateKeyParameters)
@@ -114,16 +125,20 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             return pKey;
         }
 
+        /// <summary>Gets the l.</summary>
         [Obsolete("Use 'Level' instead")]
         public int L => m_level;
 
+        /// <summary>Gets the level.</summary>
         public int Level => m_level;
 
+        /// <summary>Return the index.</summary>
         public long GetIndex()
         {
             lock (this) return m_index;
         }
 
+        /// <summary>Return the lms parameters.</summary>
         public LmsParameters[] GetLmsParameters()
         {
             lock (this)
@@ -162,8 +177,10 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
 
         public bool IsShard() => m_isShard;
 
+        /// <summary>Gets the index limit.</summary>
         public long IndexLimit => m_indexLimit;
 
+        /// <inheritdoc/>
         public long GetUsagesRemaining() => IndexLimit - GetIndex();
 
         internal LmsPrivateKeyParameters GetRootKey() => m_keys[0];
@@ -204,6 +221,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             }
         }
 
+        /// <summary>Return the keys.</summary>
         public IList<LmsPrivateKeyParameters> GetKeys()
         {
             lock (this) return m_keys;
@@ -330,6 +348,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             }
         }
 
+        /// <summary>Return the public key.</summary>
         public HssPublicKeyParameters GetPublicKey()
         {
             lock (this)
@@ -367,6 +386,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             this.m_sig = new List<LmsSignature>(newSig);
         }
 
+        /// <inheritdoc/>
         public override bool Equals(object obj)
         {
             if (this == obj)
@@ -381,6 +401,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
                 && CompareLists(this.m_sig, that.m_sig);
         }
 
+        /// <inheritdoc/>
         public override byte[] GetEncoded()
         {
             lock (this)
@@ -410,6 +431,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             }
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             int result = m_level;
@@ -426,6 +448,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             return MakeCopy(this);
         }
 
+        /// <inheritdoc/>
         public LmsContext GenerateLmsContext()
         {
             LmsSignedPubKey[] signed_pub_key;
@@ -459,6 +482,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             return nextKey.GenerateLmsContext().WithSignedPublicKeys(signed_pub_key);
         }
 
+        /// <inheritdoc/>
         public byte[] GenerateSignature(LmsContext context)
         {
             try

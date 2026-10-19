@@ -85,12 +85,16 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             m_digestOid = digestOid;
         }
 
+        /// <summary>Gets the digest oid.</summary>
         public DerObjectIdentifier DigestOid => m_digestOid;
 
+        /// <summary>Gets the h.</summary>
         public int H => m_h;
 
+        /// <summary>Gets the ID.</summary>
         public int ID => m_id;
 
+        /// <summary>Gets the m.</summary>
         public int M => m_m;
     }
 }

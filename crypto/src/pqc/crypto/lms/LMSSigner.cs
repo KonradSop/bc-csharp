@@ -11,6 +11,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
         private LmsPrivateKeyParameters m_privateKey;
         private LmsPublicKeyParameters m_publicKey;
 
+        /// <inheritdoc/>
         public void Init(bool forSigning, ICipherParameters param)
         {
             if (forSigning)
@@ -47,6 +48,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             }
         }
 
+        /// <inheritdoc/>
         public byte[] GenerateSignature(byte[] message)
         {
             try
@@ -59,6 +61,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             }
         }
 
+        /// <inheritdoc/>
         public bool VerifySignature(byte[] message, byte[] signature)
         {
             try

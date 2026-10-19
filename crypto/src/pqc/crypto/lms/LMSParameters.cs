@@ -5,6 +5,9 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
         private readonly LMSigParameters m_lmSigParameters;
         private readonly LMOtsParameters m_lmOtsParameters;
 
+        /// <summary>Create a new <see cref="LmsParameters"/>.</summary>
+        /// <param name="lmSigParameters">The lm sig parameters.</param>
+        /// <param name="lmOtsParameters">The lm ots parameters.</param>
         public LmsParameters(LMSigParameters lmSigParameters, LMOtsParameters lmOtsParameters)
         {
             m_lmSigParameters = lmSigParameters;

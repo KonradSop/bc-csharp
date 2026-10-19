@@ -17,6 +17,12 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
         private LmsSignedPubKey[] m_signedPubKeys;
         private volatile IDigest m_digest;
 
+        /// <summary>Create a new <see cref="LmsContext"/>.</summary>
+        /// <param name="privateKey">The private key.</param>
+        /// <param name="sigParams">The sig params.</param>
+        /// <param name="digest">The digest.</param>
+        /// <param name="C">The c.</param>
+        /// <param name="path">The path.</param>
         // TODO[api] Make internal
         public LmsContext(LMOtsPrivateKey privateKey, LMSigParameters sigParams, IDigest digest, byte[] C,
             byte[][] path)
@@ -30,6 +36,10 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             m_signature = null;
         }
 
+        /// <summary>Create a new <see cref="LmsContext"/>.</summary>
+        /// <param name="publicKey">The public key.</param>
+        /// <param name="signature">The signature.</param>
+        /// <param name="digest">The digest.</param>
         // TODO[api] Make internal
         public LmsContext(LMOtsPublicKey publicKey, object signature, IDigest digest)
         {
@@ -42,8 +52,10 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             m_path = null;
         }
 
+        /// <summary>Gets the c.</summary>
         public byte[] C => m_c;
 
+        /// <summary>Return the q.</summary>
         public byte[] GetQ()
         {
             byte[] Q = new byte[LMOts.MAX_HASH + 2];
@@ -61,6 +73,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
 
         internal LMSigParameters SigParams => m_sigParams;
 
+        /// <summary>Gets the signature.</summary>
         public object Signature => m_signature;
 
         internal LmsSignedPubKey[] SignedPubKeys => m_signedPubKeys;
@@ -71,38 +84,47 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             return this;
         }
 
+        /// <inheritdoc/>
         public string AlgorithmName => m_digest.AlgorithmName;
 
+        /// <inheritdoc/>
         public int GetDigestSize() => m_digest.GetDigestSize();
 
+        /// <inheritdoc/>
         public int GetByteLength() => m_digest.GetByteLength();
 
+        /// <inheritdoc/>
         public void Update(byte input)
         {
             m_digest.Update(input);
         }
 
+        /// <inheritdoc/>
         public void BlockUpdate(byte[] input, int inOff, int len)
         {
             m_digest.BlockUpdate(input, inOff, len);
         }
 
+        /// <inheritdoc/>
         public int DoFinal(byte[] output, int outOff)
         {
             return m_digest.DoFinal(output, outOff);
         }
 
+        /// <inheritdoc/>
         public void Reset()
         {
             m_digest.Reset();
         }
 
 #if NETCOREAPP2_1_OR_GREATER || NETSTANDARD2_1_OR_GREATER
+        /// <inheritdoc/>
         public void BlockUpdate(ReadOnlySpan<byte> input)
         {
             m_digest.BlockUpdate(input);
         }
 
+        /// <inheritdoc/>
         public int DoFinal(Span<byte> output)
         {
             return m_digest.DoFinal(output);

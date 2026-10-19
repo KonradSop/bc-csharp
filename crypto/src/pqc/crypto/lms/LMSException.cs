@@ -8,21 +8,30 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
     public class LmsException
         : Exception
     {
+        /// <summary>Create a new <see cref="LmsException"/>.</summary>
         public LmsException()
             : base()
         {
         }
 
+        /// <summary>Create a new <see cref="LmsException"/>.</summary>
+        /// <param name="message">The message.</param>
         public LmsException(string message)
             : base(message)
         {
         }
 
+        /// <summary>Create a new <see cref="LmsException"/>.</summary>
+        /// <param name="message">The message.</param>
+        /// <param name="innerException">The inner exception.</param>
         public LmsException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
 
+        /// <summary>Create a new <see cref="LmsException"/>.</summary>
+        /// <param name="info">The info.</param>
+        /// <param name="context">The context.</param>
         protected LmsException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

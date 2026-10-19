@@ -13,6 +13,11 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
         private readonly int m_q;
         private readonly byte[] m_masterSecret;
 
+        /// <summary>Create a new <see cref="LMOtsPrivateKey"/>.</summary>
+        /// <param name="parameters">The parameters.</param>
+        /// <param name="i">The i.</param>
+        /// <param name="q">The q.</param>
+        /// <param name="masterSecret">The master secret.</param>
         public LMOtsPrivateKey(LMOtsParameters parameters, byte[] i, int q, byte[] masterSecret)
         {
             m_parameters = parameters;
@@ -39,12 +44,15 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             return new LmsContext(this, sigParams, ctx, C, path);
         }
 
+        /// <summary>Return the i.</summary>
         public byte[] GetI() => Arrays.Clone(m_I);
 
+        /// <summary>Return the master secret.</summary>
         public byte[] GetMasterSecret() => Arrays.Clone(m_masterSecret);
 
         public LMOtsParameters Parameters => m_parameters;
 
+        /// <summary>Gets the q.</summary>
         public int Q => m_q;
 
         internal SeedDerive GetDerivationFunction()
@@ -56,9 +64,11 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             };
         }
 
+        /// <summary>Gets the i.</summary>
         [Obsolete("Use 'GetI' instead")]
         public byte[] I => m_I;
 
+        /// <summary>Gets the master secret.</summary>
         [Obsolete("Use 'GetMasterSecret' instead")]
         public byte[] MasterSecret => m_masterSecret;
     }

@@ -34,6 +34,13 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
         //
         private LmsPublicKeyParameters m_publicKey;
 
+        /// <summary>Create a new <see cref="LmsPrivateKeyParameters"/>.</summary>
+        /// <param name="lmsParameter">The lms parameter.</param>
+        /// <param name="otsParameters">The ots parameters.</param>
+        /// <param name="q">The q.</param>
+        /// <param name="I">The i.</param>
+        /// <param name="maxQ">The max q.</param>
+        /// <param name="masterSecret">The master secret.</param>
         public LmsPrivateKeyParameters(LMSigParameters lmsParameter, LMOtsParameters otsParameters, int q, byte[] I,
             int maxQ, byte[] masterSecret)
             : this(lmsParameter, otsParameters, q, I, maxQ, masterSecret, false)
@@ -72,6 +79,11 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
         public static LmsPrivateKeyParameters GetInstance(byte[] privEnc, byte[] pubEnc) =>
             Parse(privEnc, 0, privEnc.Length, LmsPublicKeyParameters.Parse(pubEnc));
 
+        /// <summary>Return an <see cref="LmsPrivateKeyParameters"/> from the given object.</summary>
+        /// <param name="src">
+        /// An <see cref="LmsPrivateKeyParameters"/>, an object from which one can be constructed, or null.
+        /// </param>
+        /// <returns>The <see cref="LmsPrivateKeyParameters"/>, or null if <paramref name="src"/> is null.</returns>
         public static LmsPrivateKeyParameters GetInstance(object src)
         {
             if (src is LmsPrivateKeyParameters lmsPrivateKeyParameters)
@@ -159,6 +171,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             }
         }
 
+        /// <inheritdoc/>
         public LmsContext GenerateLmsContext()
         {
             // Step 1.
@@ -183,6 +196,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             return otsPk.GetSignatureContext(sigParameters, path);
         }
 
+        /// <inheritdoc/>
         public byte[] GenerateSignature(LmsContext context)
         {
             try
@@ -239,25 +253,32 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             }
         }
 
+        /// <summary>Return the sig parameters.</summary>
         [Obsolete("Use 'SigParameters' instead")]
         public LMSigParameters GetSigParameters() => sigParameters;
 
         public LMSigParameters SigParameters => sigParameters;
 
+        /// <summary>Return the ots parameters.</summary>
         [Obsolete("Use 'OtsParameters' instead")]
         public LMOtsParameters GetOtsParameters() => otsParameters;
 
         public LMOtsParameters OtsParameters => otsParameters;
 
+        /// <summary>Return the i.</summary>
         public byte[] GetI() => Arrays.Clone(I);
 
+        /// <summary>Return the master secret.</summary>
         public byte[] GetMasterSecret() => Arrays.Clone(masterSecret);
 
+        /// <summary>Gets the index limit.</summary>
         public int IndexLimit => maxQ;
 
+        /// <inheritdoc/>
         // TODO[api] Only needs 'int'
         public long GetUsagesRemaining() => IndexLimit - GetIndex();
 
+        /// <summary>Return the public key.</summary>
         public LmsPublicKeyParameters GetPublicKey()
         {
             if (m_isPlaceholder)
@@ -316,6 +337,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             return T;
         }
 
+        /// <inheritdoc/>
         // TODO[api] Fix parameter name
         public override bool Equals(object o)
         {
@@ -331,6 +353,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
                 && Arrays.AreEqual(this.masterSecret, that.masterSecret);
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             int result = q;
@@ -342,6 +365,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             return result;
         }
 
+        /// <inheritdoc/>
         public override byte[] GetEncoded()
         {
             //

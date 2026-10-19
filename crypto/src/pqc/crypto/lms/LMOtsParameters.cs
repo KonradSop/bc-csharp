@@ -84,18 +84,25 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             m_digestOid = digestOid;
         }
 
+        /// <summary>Gets the ID.</summary>
         public int ID => m_id;
 
+        /// <summary>Gets the n.</summary>
         public int N => m_n;
 
+        /// <summary>Gets the w.</summary>
         public int W => m_w;
 
+        /// <summary>Gets the p.</summary>
         public int P => m_p;
 
+        /// <summary>Gets the ls.</summary>
         public int Ls => m_ls;
 
+        /// <summary>Gets the sig len.</summary>
         public int SigLen => Convert.ToInt32(m_sigLen);
 
+        /// <summary>Gets the digest oid.</summary>
         public DerObjectIdentifier DigestOid => m_digestOid;
     }
 }

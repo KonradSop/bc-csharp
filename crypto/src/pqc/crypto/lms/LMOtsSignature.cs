@@ -14,6 +14,10 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
         private readonly byte[] m_C;
         private readonly byte[] m_y;
 
+        /// <summary>Create a new <see cref="LMOtsSignature"/>.</summary>
+        /// <param name="paramType">The param type.</param>
+        /// <param name="c">The c.</param>
+        /// <param name="y">The second operand.</param>
         public LMOtsSignature(LMOtsParameters paramType, byte[] c, byte[] y)
         {
             m_paramType = paramType;
@@ -21,6 +25,11 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             m_y = y;
         }
 
+        /// <summary>Return an <see cref="LMOtsSignature"/> from the given object.</summary>
+        /// <param name="src">
+        /// An <see cref="LMOtsSignature"/>, an object from which one can be constructed, or null.
+        /// </param>
+        /// <returns>The <see cref="LMOtsSignature"/>, or null if <paramref name="src"/> is null.</returns>
         public static LMOtsSignature GetInstance(object src)
         {
             if (src is LMOtsSignature lmOtsSignature)
@@ -49,12 +58,16 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             return new LMOtsSignature(parameter, C, sig);
         }
 
+        /// <summary>Return the c.</summary>
         public byte[] GetC() => Arrays.Clone(m_C);
 
+        /// <summary>Return the y.</summary>
         public byte[] GetY() => Arrays.Clone(m_y);
 
+        /// <summary>Gets the param type.</summary>
         public LMOtsParameters ParamType => m_paramType;
 
+        /// <inheritdoc/>
         public override bool Equals(object obj)
         {
             if (this == obj)
@@ -67,6 +80,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
                 && Arrays.AreEqual(m_y, that.m_y);
         }
 
+        /// <inheritdoc/>
         public override int GetHashCode()
         {
             int result = Objects.GetHashCode(m_paramType);
@@ -75,6 +89,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             return result;
         }
 
+        /// <inheritdoc/>
         public byte[] GetEncoded()
         {
             return Composer.Compose()
@@ -84,9 +99,11 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
                 .Build();
         }
 
+        /// <summary>Gets the c.</summary>
         [Obsolete("Use 'GetC' instead")]
         public byte[] C => m_C;
 
+        /// <summary>Gets the y.</summary>
         [Obsolete("Use 'GetY' instead")]
         public byte[] Y => m_y;
     }
