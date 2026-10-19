@@ -20,6 +20,7 @@ using Org.BouncyCastle.Utilities.Collections;
 
 namespace Org.BouncyCastle.Operators.Utilities
 {
+    /// <summary>The default finder of digest algorithm identifiers.</summary>
     public class DefaultDigestAlgorithmFinder
         : IDigestAlgorithmFinder
     {
