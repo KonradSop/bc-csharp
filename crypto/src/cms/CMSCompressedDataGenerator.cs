@@ -10,11 +10,13 @@ namespace Org.BouncyCastle.Cms
     /// <summary>General class for generating a compressed CMS message.</summary>
     public class CmsCompressedDataGenerator
     {
+        /// <summary>The object identifier (as a string) of the ZLIB compression algorithm.</summary>
         public static readonly string ZLib = CmsObjectIdentifiers.ZlibCompress.Id;
 
         private static readonly AlgorithmIdentifier ZLibCompressionAlgorithm =
             new AlgorithmIdentifier(CmsObjectIdentifiers.ZlibCompress);
 
+        /// <summary>Create a generator.</summary>
         public CmsCompressedDataGenerator()
         {
         }
@@ -24,6 +26,11 @@ namespace Org.BouncyCastle.Cms
         public CmsCompressedData Generate(CmsProcessable content, string compressionOid) =>
             Generate(CmsUtilities.GetTypedData(content), compressionOid);
 
+        /// <summary>Generate an object that contains a CMS CompressedData.</summary>
+        /// <param name="content">The content to compress.</param>
+        /// <param name="compressionOid">The compression algorithm; only <see cref="ZLib"/> is supported.</param>
+        /// <exception cref="ArgumentException">The compression algorithm is not supported.</exception>
+        /// <exception cref="CmsException">The content could not be compressed.</exception>
         public CmsCompressedData Generate(CmsTypedData content, string compressionOid)
         {
             if (ZLib != compressionOid)

@@ -5,9 +5,7 @@ using Org.BouncyCastle.Asn1.Cms;
 
 namespace Org.BouncyCastle.Cms
 {
-    /**
-     * Basic generator that just returns a preconstructed attribute table
-     */
+    /// <summary>Basic generator that just returns a preconstructed attribute table.</summary>
     public class SimpleAttributeTableGenerator
         : CmsAttributeTableGenerator
     {
@@ -19,6 +17,8 @@ namespace Org.BouncyCastle.Cms
             this.attributes = attributes;
         }
 
+        /// <summary>Return the preconstructed attribute table.</summary>
+        /// <param name="parameters">The generation parameters, which are ignored.</param>
         public virtual AttributeTable GetAttributes(IDictionary<CmsAttributeTableParameter, object> parameters)
         {
             return attributes;
