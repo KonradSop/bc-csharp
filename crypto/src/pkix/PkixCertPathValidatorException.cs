@@ -5,57 +5,55 @@ using Org.BouncyCastle.Security;
 
 namespace Org.BouncyCastle.Pkix
 {
-    /**
-     * An exception indicating one of a variety of problems encountered when
-     * validating a certification path. <br />
-     * <br />
-     * A <code>CertPathValidatorException</code> provides support for wrapping
-     * exceptions. The {@link #getCause getCause} method returns the throwable,
-     * if any, that caused this exception to be thrown. <br />
-     * <br />
-     * A <code>CertPathValidatorException</code> may also include the index of
-     * the certificate in the certification path that caused the
-     * exception to be thrown. Use the {@link #Index Index} property to retrieve
-     * this information.<br />
-     * <br />
-     * <b>Concurrent Access</b><br />
-     * <br />
-     * Unless otherwise specified, the methods defined in this class are not
-     * thread-safe. Multiple threads that need to access a single
-     * object concurrently should synchronize amongst themselves and
-     * provide the necessary locking. Multiple threads each manipulating
-     * separate objects need not synchronize.
-     *
-     * @see CertPathValidator
-     */
+    /// <summary>
+    /// An exception indicating one of a variety of problems encountered when validating a certification path.
+    /// </summary>
+    /// <remarks>
+    /// The exception may wrap the exception that caused it, available through <see cref="Exception.InnerException"/>.
+    /// It may also include the index of the certificate in the certification path that caused the exception to be
+    /// thrown, available through <see cref="Index"/>.
+    /// <para>
+    /// Unless otherwise specified, the methods defined in this class are not thread-safe. Multiple threads that need
+    /// to access a single object concurrently should synchronize amongst themselves and provide the necessary
+    /// locking. Multiple threads each manipulating separate objects need not synchronize.
+    /// </para>
+    /// </remarks>
+    /// <seealso cref="PkixCertPathValidator"/>
     [Serializable]
     public class PkixCertPathValidatorException
         : GeneralSecurityException
     {
+        /// <summary>The index of the offending certificate in the path, or -1 if none has been set.</summary>
         protected readonly int m_index = -1;
 
+        /// <summary>Create an exception with no detail message.</summary>
         public PkixCertPathValidatorException()
             : base()
         {
         }
 
+        /// <summary>Create an exception with the specified detail message.</summary>
+        /// <param name="message">The detail message.</param>
         public PkixCertPathValidatorException(string message)
             : base(message)
         {
         }
 
+        /// <summary>Create an exception with the specified detail message and cause.</summary>
+        /// <param name="message">The detail message.</param>
+        /// <param name="innerException">The cause.</param>
         public PkixCertPathValidatorException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
 
         /// <summary>
-        /// Creates a <code>PkixCertPathValidatorException</code> with the specified
-        /// detail message, cause, certification path, and index.
+        /// Creates a <c>PkixCertPathValidatorException</c> with the specified detail message, cause and index.
         /// </summary>
-        /// <param name="message">the detail message (or <code>null</code> if none)</param>
-        /// <param name="innerException">the cause (or <code>null</code> if none)</param>
-        /// <param name="index">the index of the certificate in the certification path that</param>
+        /// <param name="message">The detail message (or null if none).</param>
+        /// <param name="innerException">The cause (or null if none).</param>
+        /// <param name="index">The index of the certificate in the path that caused the exception.</param>
+        /// <exception cref="ArgumentException"><paramref name="index"/> is less than -1.</exception>
         public PkixCertPathValidatorException(string message, Exception innerException, int index)
             : base(message, innerException)
         {
@@ -77,8 +75,9 @@ namespace Org.BouncyCastle.Pkix
             info.AddValue("index", m_index);
         }
 
-        /// <summary> eturns the index of the certificate in the certification path that caused the exception to be
-        /// thrown.</summary>
+        /// <summary>
+        /// Returns the index of the certificate in the certification path that caused the exception to be thrown.
+        /// </summary>
         /// <remarks>
         /// Note that the list of certificates in a <see cref="PkixCertPath"/> is zero based. If no index has been set,
         /// -1 is returned.
