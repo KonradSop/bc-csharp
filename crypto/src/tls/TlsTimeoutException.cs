@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 
 namespace Org.BouncyCastle.Tls
 {
+    /// <summary>Exception thrown when a TLS operation times out.</summary>
     [Serializable]
     public class TlsTimeoutException
         : IOException

@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Org.BouncyCastle.Tls
 {
+    /// <summary>Exception for a fatal TLS alert generated locally.</summary>
     [Serializable]
     public class TlsFatalAlert
         : TlsException

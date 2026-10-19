@@ -8,6 +8,7 @@ using Org.BouncyCastle.Utilities;
 
 namespace Org.BouncyCastle.Tls
 {
+    /// <summary>The DTLS client protocol: runs a DTLS handshake as the client.</summary>
     public class DtlsClientProtocol
         : DtlsProtocol
     {
@@ -1137,6 +1138,7 @@ namespace Org.BouncyCastle.Tls
             return patched;
         }
 
+        /// <summary>The state of a client-side DTLS handshake.</summary>
         protected internal class ClientHandshakeState
         {
             internal TlsClient client = null;

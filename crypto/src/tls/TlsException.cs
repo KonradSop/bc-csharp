@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 
 namespace Org.BouncyCastle.Tls
 {
+    /// <summary>Base class for exceptions thrown by the TLS protocol implementation.</summary>
     [Serializable]
     public class TlsException
         : IOException

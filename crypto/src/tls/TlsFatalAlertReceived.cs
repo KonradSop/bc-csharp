@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Org.BouncyCastle.Tls
 {
+    /// <summary>Exception for a fatal TLS alert received from the peer.</summary>
     [Serializable]
     public class TlsFatalAlertReceived
         : TlsException
