@@ -30,8 +30,8 @@ namespace Org.BouncyCastle.Crypto
         }
 
         /// <summary>Create a new <see cref="CryptoException"/>.</summary>
-        /// <param name="info">The info.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="info">The serialization information.</param>
+        /// <param name="context">The streaming context.</param>
         protected CryptoException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
