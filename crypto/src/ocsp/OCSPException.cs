@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Org.BouncyCastle.Ocsp
 {
+    /// <summary>Exception thrown when an OCSP request or response cannot be processed.</summary>
     [Serializable]
     public class OcspException
         : Exception
