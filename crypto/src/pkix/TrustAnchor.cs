@@ -137,7 +137,9 @@ namespace Org.BouncyCastle.Pkix
         /// constraints. Only the value of the extension is included, not
         /// the OID or criticality flag. Specify null to omit the
         /// parameter.</param>
-        /// throws NullPointerException, IllegalArgumentException
+        /// <exception cref="ArgumentNullException"><paramref name="caName"/> or <paramref name="pubKey"/> is null.
+        /// </exception>
+        /// <exception cref="ArgumentException"><paramref name="caName"/> is an empty string.</exception>
         public TrustAnchor(string caName, AsymmetricKeyParameter pubKey, byte[] nameConstraints)
         {
             if (caName == null)
@@ -183,6 +185,7 @@ namespace Org.BouncyCastle.Pkix
             nc = NameConstraints.GetInstance(bytes);
         }
 
+        /// <summary>Returns a copy of the DER encoding of the name constraints, or null if there are none.</summary>
         public byte[] GetNameConstraints => Arrays.Clone(ncBytes);
 
         /// <summary>
