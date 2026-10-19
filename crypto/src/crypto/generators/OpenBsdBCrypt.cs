@@ -232,9 +232,9 @@ namespace Org.BouncyCastle.Crypto.Generators
         /*
          * decodes the bcrypt base 64 encoded SaltString
          *
-         * @param 		a 22 character Bcrypt base 64 encoded String 
+         * @param 		a 22 character Bcrypt base 64 encoded String
          * @return 		the 16 byte salt
-         * @exception 	DataLengthException if the length 
+         * @exception 	DataLengthException if the length
          * 				of parameter is not 22
          * @exception 	InvalidArgumentException if the parameter
          * 				contains a value other than from Bcrypts base 64 encoding table
