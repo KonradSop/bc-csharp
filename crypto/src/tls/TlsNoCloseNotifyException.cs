@@ -15,11 +15,15 @@ namespace Org.BouncyCastle.Tls
     public class TlsNoCloseNotifyException
         : EndOfStreamException
     {
+        /// <summary>Create a new <see cref="TlsNoCloseNotifyException"/>.</summary>
         public TlsNoCloseNotifyException()
             : base("No close_notify alert received before connection closed")
         {
         }
 
+        /// <summary>Create a new <see cref="TlsNoCloseNotifyException"/>.</summary>
+        /// <param name="info">The info.</param>
+        /// <param name="context">The context.</param>
         protected TlsNoCloseNotifyException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

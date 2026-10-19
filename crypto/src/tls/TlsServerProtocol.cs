@@ -73,6 +73,7 @@ namespace Org.BouncyCastle.Tls
             }
         }
 
+        /// <inheritdoc/>
         protected override void CleanupHandshake()
         {
             base.CleanupHandshake();
@@ -889,6 +890,7 @@ namespace Org.BouncyCastle.Tls
             }
         }
 
+        /// <inheritdoc/>
         protected override void HandleHandshakeMessage(short type, HandshakeMessageInput buf)
         {
             SecurityParameters securityParameters = m_tlsServerContext.SecurityParameters;
@@ -1283,6 +1285,7 @@ namespace Org.BouncyCastle.Tls
             }
         }
 
+        /// <inheritdoc/>
         protected override void HandleAlertWarningMessage(short alertDescription)
         {
             /*

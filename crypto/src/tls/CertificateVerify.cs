@@ -8,6 +8,9 @@ namespace Org.BouncyCastle.Tls
         private readonly int m_algorithm;
         private readonly byte[] m_signature;
 
+        /// <summary>Create a new <see cref="CertificateVerify"/>.</summary>
+        /// <param name="algorithm">The algorithm.</param>
+        /// <param name="signature">The signature.</param>
         public CertificateVerify(int algorithm, byte[] signature)
         {
             if (!TlsUtilities.IsValidUint16(algorithm))
@@ -25,6 +28,7 @@ namespace Org.BouncyCastle.Tls
             get { return m_algorithm; }
         }
 
+        /// <summary>Gets the signature.</summary>
         public byte[] Signature
         {
             get { return m_signature; }

@@ -19,21 +19,33 @@ namespace Org.BouncyCastle.Tls
 
         protected readonly byte m_alertDescription;
 
+        /// <summary>Create a new <see cref="TlsFatalAlert"/>.</summary>
+        /// <param name="alertDescription">The alert description.</param>
         public TlsFatalAlert(short alertDescription)
             : this(alertDescription, null, null)
         {
         }
 
+        /// <summary>Create a new <see cref="TlsFatalAlert"/>.</summary>
+        /// <param name="alertDescription">The alert description.</param>
+        /// <param name="detailMessage">The detail message.</param>
         public TlsFatalAlert(short alertDescription, string detailMessage)
             : this(alertDescription, detailMessage, null)
         {
         }
 
+        /// <summary>Create a new <see cref="TlsFatalAlert"/>.</summary>
+        /// <param name="alertDescription">The alert description.</param>
+        /// <param name="alertCause">The alert cause.</param>
         public TlsFatalAlert(short alertDescription, Exception alertCause)
             : this(alertDescription, null, alertCause)
         {
         }
 
+        /// <summary>Create a new <see cref="TlsFatalAlert"/>.</summary>
+        /// <param name="alertDescription">The alert description.</param>
+        /// <param name="detailMessage">The detail message.</param>
+        /// <param name="alertCause">The alert cause.</param>
         public TlsFatalAlert(short alertDescription, string detailMessage, Exception alertCause)
             : base(GetMessage(alertDescription, detailMessage), alertCause)
         {
@@ -43,18 +55,23 @@ namespace Org.BouncyCastle.Tls
             m_alertDescription = (byte)alertDescription;
         }
 
+        /// <summary>Create a new <see cref="TlsFatalAlert"/>.</summary>
+        /// <param name="info">The info.</param>
+        /// <param name="context">The context.</param>
         protected TlsFatalAlert(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             m_alertDescription = info.GetByte("alertDescription");
         }
 
+        /// <inheritdoc/>
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
             info.AddValue("alertDescription", m_alertDescription);
         }
 
+        /// <summary>Gets the alert description.</summary>
         public virtual short AlertDescription
         {
             get { return m_alertDescription; }

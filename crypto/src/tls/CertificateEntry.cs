@@ -10,6 +10,9 @@ namespace Org.BouncyCastle.Tls
         private readonly TlsCertificate m_certificate;
         private readonly IDictionary<int, byte[]> m_extensions;
 
+        /// <summary>Create a new <see cref="CertificateEntry"/>.</summary>
+        /// <param name="certificate">The certificate.</param>
+        /// <param name="extensions">The extensions.</param>
         public CertificateEntry(TlsCertificate certificate, IDictionary<int, byte[]> extensions)
         {
             if (null == certificate)
@@ -24,6 +27,7 @@ namespace Org.BouncyCastle.Tls
             get { return m_certificate; }
         }
 
+        /// <summary>Gets the extensions.</summary>
         public IDictionary<int, byte[]> Extensions
         {
             get { return m_extensions; }
