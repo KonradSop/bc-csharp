@@ -30,6 +30,8 @@ namespace Org.BouncyCastle.X509
         private volatile bool hashValueSet;
         private volatile int hashValue;
 
+        /// <summary>Create an entry for a CRL that is not an indirect CRL.</summary>
+        /// <param name="c">The ASN.1 <see cref="CrlEntry"/> object.</param>
         public X509CrlEntry(CrlEntry c)
         {
             this.c = c;
@@ -56,6 +58,7 @@ namespace Org.BouncyCastle.X509
             this.certificateIssuer = LoadCertificateIssuer();
         }
 
+        /// <summary>Gets the underlying ASN.1 structure.</summary>
         public virtual CrlEntry CrlEntry => c;
 
         private X509Name LoadCertificateIssuer()
@@ -82,10 +85,17 @@ namespace Org.BouncyCastle.X509
             return null;
         }
 
+        /// <summary>Return the issuer of the revoked certificate.</summary>
+        /// <returns>
+        /// The issuer name, or null if the CRL is not an indirect CRL or no issuer can be determined.
+        /// </returns>
         public X509Name GetCertificateIssuer() => certificateIssuer;
 
+        /// <summary>Returns the extensions of the entry, or null if there are none.</summary>
         protected override X509Extensions GetX509Extensions() => c.Extensions;
 
+        /// <summary>Return the DER encoding of the entry.</summary>
+        /// <exception cref="CrlException">The entry could not be encoded.</exception>
         public byte[] GetEncoded()
         {
             try
@@ -98,12 +108,16 @@ namespace Org.BouncyCastle.X509
             }
         }
 
+        /// <summary>Gets the serial number of the revoked certificate.</summary>
         public BigInteger SerialNumber => c.UserCertificate.Value;
 
+        /// <summary>Gets the date on which the certificate was revoked.</summary>
         public DateTime RevocationDate => c.RevocationDate.ToDateTime();
 
+        /// <summary>Gets whether the entry has any extensions.</summary>
         public bool HasExtensions => c.Extensions != null;
 
+        /// <summary>Two entries are equal if their underlying ASN.1 structures are equal.</summary>
         public override bool Equals(object other)
         {
             if (this == other)
@@ -121,6 +135,7 @@ namespace Org.BouncyCastle.X509
             return this.c.Equals(that.c);
         }
 
+        /// <summary>Returns a hash code derived from the underlying ASN.1 structure.</summary>
         public override int GetHashCode()
         {
             if (!hashValueSet)
@@ -132,6 +147,7 @@ namespace Org.BouncyCastle.X509
             return hashValue;
         }
 
+        /// <summary>Returns a textual description of the entry.</summary>
         public override string ToString()
         {
             StringBuilder buf = new StringBuilder();

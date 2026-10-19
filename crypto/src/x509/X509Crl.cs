@@ -66,11 +66,16 @@ namespace Org.BouncyCastle.X509
         private volatile bool hashValueSet;
         private volatile int hashValue;
 
+        /// <summary>Parse a CRL from its encoding.</summary>
+        /// <param name="encoding">The encoded CRL.</param>
         public X509Crl(byte[] encoding)
             : this(CertificateList.GetInstance(encoding))
         {
         }
 
+        /// <summary>Wrap an ASN.1 CertificateList structure.</summary>
+        /// <param name="c">The ASN.1 structure.</param>
+        /// <exception cref="CrlException">The contents of the CRL are invalid.</exception>
         public X509Crl(CertificateList c)
         {
             this.c = c;
@@ -88,17 +93,30 @@ namespace Org.BouncyCastle.X509
             }
         }
 
+        /// <summary>Gets the underlying ASN.1 structure.</summary>
         public virtual CertificateList CertificateList => c;
 
+        /// <summary>Returns the extensions of the CRL, or null for a version 1 CRL.</summary>
         protected override X509Extensions GetX509Extensions() => c.Version >= 2 ? c.TbsCertList.Extensions : null;
 
         // TODO[api] Rename 'key' to 'publicKey'
+        /// <summary>Check whether the CRL signature is valid for the given public key.</summary>
+        /// <param name="key">The public key of the issuer.</param>
+        /// <returns>true if the signature is valid, false otherwise.</returns>
+        /// <exception cref="CrlException">The signature algorithms in the CRL do not match.</exception>
         public virtual bool IsSignatureValid(AsymmetricKeyParameter key) =>
             CheckSignatureValid(new Asn1VerifierFactory(c.SignatureAlgorithm, key));
 
+        /// <summary>Check whether the CRL signature is valid, using a verifier from the given provider.</summary>
+        /// <param name="verifierProvider">A provider of signature verifier factories.</param>
+        /// <returns>true if the signature is valid, false otherwise.</returns>
+        /// <exception cref="CrlException">The signature algorithms in the CRL do not match.</exception>
         public virtual bool IsSignatureValid(IVerifierFactoryProvider verifierProvider) =>
             CheckSignatureValid(verifierProvider.CreateVerifierFactory(c.SignatureAlgorithm));
 
+        /// <summary>Check whether the alternative signature carried in the CRL's extensions is valid.</summary>
+        /// <param name="verifierProvider">A provider of signature verifier factories.</param>
+        /// <returns>true if the alternative signature is valid, false otherwise.</returns>
         public virtual bool IsAlternativeSignatureValid(IVerifierFactoryProvider verifierProvider)
         {
             var tbsCertList = c.TbsCertList;
@@ -129,36 +147,42 @@ namespace Org.BouncyCastle.X509
             return X509Utilities.VerifySignature(verifier, new DerSequence(v), altSigValue.Signature);
         }
 
+        /// <summary>Verify the CRL signature with the given public key.</summary>
+        /// <param name="publicKey">The public key of the issuer.</param>
+        /// <exception cref="InvalidKeyException">The CRL does not verify with the key.</exception>
+        /// <exception cref="CrlException">The signature algorithms in the CRL do not match.</exception>
         public virtual void Verify(AsymmetricKeyParameter publicKey) =>
             CheckSignature(new Asn1VerifierFactory(c.SignatureAlgorithm, publicKey));
 
-        /// <summary>
-        /// Verify the CRL's signature using a verifier created using the passed in verifier provider.
-        /// </summary>
-        /// <param name="verifierProvider">An appropriate provider for verifying the CRL's signature.</param>
-        /// <returns>True if the signature is valid.</returns>
-        /// <exception cref="Exception">If verifier provider is not appropriate or the CRL algorithm is invalid.</exception>
+        /// <summary>Verify the CRL signature, using a verifier from the given provider.</summary>
+        /// <param name="verifierProvider">A provider of signature verifier factories.</param>
+        /// <exception cref="InvalidKeyException">The CRL does not verify.</exception>
+        /// <exception cref="CrlException">The signature algorithms in the CRL do not match.</exception>
         public virtual void Verify(IVerifierFactoryProvider verifierProvider) =>
             CheckSignature(verifierProvider.CreateVerifierFactory(c.SignatureAlgorithm));
 
-        /// <summary>Verify the CRL's alternative signature using a verifier created using the passed in
-        /// verifier provider.</summary>
-        /// <param name="verifierProvider">An appropriate provider for verifying the CRL's alternative signature.
-        /// </param>
-        /// <exception cref="Exception">If verifier provider is not appropriate or the CRL alternative signature
-        /// algorithm is invalid.</exception>
+        /// <summary>Verify the alternative signature carried in the CRL's extensions.</summary>
+        /// <param name="verifierProvider">A provider of signature verifier factories.</param>
+        /// <exception cref="InvalidKeyException">The alternative signature does not verify.</exception>
         public virtual void VerifyAltSignature(IVerifierFactoryProvider verifierProvider)
         {
             if (!IsAlternativeSignatureValid(verifierProvider))
                 throw new InvalidKeyException("CRL alternative signature does not verify with supplied public key.");
         }
 
+        /// <summary>Verify the CRL signature using the given verifier factory.</summary>
+        /// <param name="verifier">The verifier factory.</param>
+        /// <exception cref="InvalidKeyException">The CRL does not verify.</exception>
         protected virtual void CheckSignature(IVerifierFactory verifier)
         {
             if (!CheckSignatureValid(verifier))
                 throw new InvalidKeyException("CRL does not verify with supplied public key.");
         }
 
+        /// <summary>Check the CRL signature using the given verifier factory.</summary>
+        /// <param name="verifier">The verifier factory.</param>
+        /// <returns>true if the signature is valid, false otherwise.</returns>
+        /// <exception cref="CrlException">The signature algorithms in the CRL do not match.</exception>
         protected virtual bool CheckSignatureValid(IVerifierFactory verifier)
         {
             var tbsCertList = c.TbsCertList;
@@ -169,12 +193,16 @@ namespace Org.BouncyCastle.X509
             return X509Utilities.VerifySignature(verifier, tbsCertList, c.Signature);
         }
 
+        /// <summary>Gets the version number of the CRL (1 or 2).</summary>
         public virtual int Version => c.Version;
 
+        /// <summary>Gets the distinguished name of the CRL issuer.</summary>
         public virtual X509Name IssuerDN => c.Issuer;
 
+        /// <summary>Gets the date this CRL was issued.</summary>
         public virtual DateTime ThisUpdate => c.ThisUpdate.ToDateTime();
 
+        /// <summary>Gets the date by which the next CRL will be issued, or null if not specified.</summary>
         public virtual DateTime? NextUpdate => c.NextUpdate?.ToDateTime();
 
         private ISet<X509CrlEntry> LoadCrlEntries()
@@ -193,6 +221,9 @@ namespace Org.BouncyCastle.X509
             return entrySet;
         }
 
+        /// <summary>Return the revocation entry for the given certificate serial number.</summary>
+        /// <param name="serialNumber">The serial number of the certificate.</param>
+        /// <returns>The entry, or null if the certificate is not listed.</returns>
         public virtual X509CrlEntry GetRevokedCertificate(
             BigInteger serialNumber)
         {
@@ -212,6 +243,8 @@ namespace Org.BouncyCastle.X509
             return null;
         }
 
+        /// <summary>Return the entries of all the revoked certificates listed in the CRL.</summary>
+        /// <returns>The entries, or null if there are none.</returns>
         public virtual ISet<X509CrlEntry> GetRevokedCertificates()
         {
             var entrySet = LoadCrlEntries();
@@ -222,6 +255,8 @@ namespace Org.BouncyCastle.X509
             return null;
         }
 
+        /// <summary>Return the DER encoding of the tbsCertList field.</summary>
+        /// <exception cref="CrlException">The field could not be encoded.</exception>
         public virtual byte[] GetTbsCertList()
         {
             try
@@ -234,6 +269,7 @@ namespace Org.BouncyCastle.X509
             }
         }
 
+        /// <summary>Return the signature octets.</summary>
         public virtual byte[] GetSignature() => c.GetSignatureOctets();
 
         /// <summary>
@@ -243,10 +279,14 @@ namespace Org.BouncyCastle.X509
         public virtual string SigAlgName => Objects.EnsureSingletonInitialized(ref m_sigAlgName, SignatureAlgorithm,
             X509SignatureUtilities.GetSignatureName);
 
+        /// <summary>Gets the object identifier of the signature algorithm.</summary>
         public virtual string SigAlgOid => c.SignatureAlgorithm.Algorithm.GetID();
 
+        /// <summary>Return a copy of the DER encoding of the signature algorithm parameters, or null if there are none.
+        /// </summary>
         public virtual byte[] GetSigAlgParams() => Arrays.Clone(sigAlgParams);
 
+        /// <summary>Gets the signature algorithm identifier.</summary>
         public virtual AlgorithmIdentifier SignatureAlgorithm => c.SignatureAlgorithm;
 
         /// <summary>
@@ -256,6 +296,7 @@ namespace Org.BouncyCastle.X509
         /// <exception cref="CrlException">If there is an error encoding the CRL.</exception>
         public virtual byte[] GetEncoded() => Arrays.Clone(GetCachedEncoding().GetEncoded());
 
+        /// <summary>Two CRLs are equal if their DER encodings are equal.</summary>
         public override bool Equals(object other)
         {
             if (this == other)
@@ -284,6 +325,7 @@ namespace Org.BouncyCastle.X509
                 && Arrays.AreEqual(thisEncoding, thatEncoding);
         }
 
+        /// <summary>Returns a hash code derived from the DER encoding.</summary>
         public override int GetHashCode()
         {
             if (!hashValueSet)
@@ -423,6 +465,10 @@ namespace Org.BouncyCastle.X509
             return false;
         }
 
+        /// <summary>
+        /// Gets whether this is an indirect CRL, according to its issuing distribution point extension.
+        /// </summary>
+        /// <exception cref="CrlException">The extension could not be read.</exception>
         protected virtual bool IsIndirectCrl
         {
             get
