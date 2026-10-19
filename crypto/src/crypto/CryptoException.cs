@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Org.BouncyCastle.Crypto
 {
+    /// <summary>General exception thrown for errors in cryptographic operations.</summary>
     [Serializable]
     public class CryptoException
         : Exception

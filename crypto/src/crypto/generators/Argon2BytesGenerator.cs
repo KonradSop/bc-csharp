@@ -110,14 +110,38 @@ namespace Org.BouncyCastle.Crypto.Generators
             }
         }
 
+        /// <summary>Generate bytes from a password using Argon2.</summary>
+        /// <param name="password">The password.</param>
+        /// <param name="output">The buffer to receive the output.</param>
+        /// <returns>The number of bytes generated.</returns>
+        /// <exception cref="InvalidOperationException">The requested output length is too small.</exception>
         public int GenerateBytes(char[] password, byte[] output) =>
             GenerateBytes(parameters.CharToByteConverter.Convert(password), output);
 
+        /// <summary>Generate bytes from a password using Argon2.</summary>
+        /// <param name="password">The password.</param>
+        /// <param name="output">The buffer to receive the output.</param>
+        /// <param name="outOff">The offset into <paramref name="output"/> at which to start writing.</param>
+        /// <param name="outLen">The number of bytes to generate.</param>
+        /// <returns>The number of bytes generated.</returns>
+        /// <exception cref="InvalidOperationException">The requested output length is too small.</exception>
         public int GenerateBytes(char[] password, byte[] output, int outOff, int outLen) =>
             GenerateBytes(parameters.CharToByteConverter.Convert(password), output, outOff, outLen);
 
+        /// <summary>Generate bytes from a password using Argon2.</summary>
+        /// <param name="password">The password.</param>
+        /// <param name="output">The buffer to receive the output.</param>
+        /// <returns>The number of bytes generated.</returns>
+        /// <exception cref="InvalidOperationException">The requested output length is too small.</exception>
         public int GenerateBytes(byte[] password, byte[] output) => GenerateBytes(password, output, 0, output.Length);
 
+        /// <summary>Generate bytes from a password using Argon2.</summary>
+        /// <param name="password">The password.</param>
+        /// <param name="output">The buffer to receive the output.</param>
+        /// <param name="outOff">The offset into <paramref name="output"/> at which to start writing.</param>
+        /// <param name="outLen">The number of bytes to generate.</param>
+        /// <returns>The number of bytes generated.</returns>
+        /// <exception cref="InvalidOperationException">The requested output length is too small.</exception>
         public int GenerateBytes(byte[] password, byte[] output, int outOff, int outLen)
         {
             if (outLen < MinOutlen)

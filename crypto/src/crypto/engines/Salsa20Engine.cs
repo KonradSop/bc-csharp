@@ -20,6 +20,7 @@ namespace Org.BouncyCastle.Crypto.Engines
     public class Salsa20Engine
         : IStreamCipher
     {
+        /// <summary>The default number of rounds.</summary>
         public static readonly int DEFAULT_ROUNDS = 20;
 
         /** Constants */
@@ -40,6 +41,7 @@ namespace Org.BouncyCastle.Crypto.Engines
             state[3] = TAU_SIGMA[tsOff + 3];
         }
 
+        /// <summary>The number of rounds.</summary>
         protected int rounds;
 
         /*
@@ -156,6 +158,7 @@ namespace Org.BouncyCastle.Crypto.Engines
             return output;
         }
 
+        /// <summary>Advance the block counter.</summary>
         protected virtual void AdvanceCounter()
         {
             if (++engineState[8] == 0)
@@ -226,11 +229,15 @@ namespace Org.BouncyCastle.Crypto.Engines
             ResetCounter();
         }
 
+        /// <summary>Reset the block counter.</summary>
         protected virtual void ResetCounter()
         {
             engineState[8] = engineState[9] = 0;
         }
 
+        /// <summary>Set up the key and the initialization vector.</summary>
+        /// <param name="keyBytes">The key.</param>
+        /// <param name="ivBytes">The initialization vector.</param>
         protected virtual void SetKey(byte[] keyBytes, byte[] ivBytes)
         {
             if (keyBytes != null)
@@ -253,6 +260,8 @@ namespace Org.BouncyCastle.Crypto.Engines
             Pack.LE_To_UInt32(ivBytes, 0, engineState, 6, 2);
         }
 
+        /// <summary>Generate a block of key stream.</summary>
+        /// <param name="output">The buffer to receive the key stream.</param>
         protected virtual void GenerateKeyStream(byte[] output)
         {
             SalsaCore(rounds, engineState, x);
