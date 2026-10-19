@@ -6,6 +6,7 @@ using Org.BouncyCastle.Utilities;
 
 namespace Org.BouncyCastle.Asn1
 {
+    /// <summary>ASN.1 ENUMERATED type.</summary>
     public class DerEnumerated
         : Asn1Object
     {
@@ -21,6 +22,11 @@ namespace Org.BouncyCastle.Asn1
             }
         }
 
+        /// <summary>Return an <see cref="DerEnumerated"/> from the given object.</summary>
+        /// <param name="obj">
+        /// An <see cref="DerEnumerated"/>, an object from which one can be constructed, or null.
+        /// </param>
+        /// <returns>The <see cref="DerEnumerated"/>, or null if <paramref name="obj"/> is null.</returns>
         public static DerEnumerated GetInstance(object obj)
         {
             if (obj == null)
@@ -49,11 +55,18 @@ namespace Org.BouncyCastle.Asn1
             throw new ArgumentException("illegal object in GetInstance: " + Platform.GetTypeName(obj), nameof(obj));
         }
 
+        /// <summary>Return an <see cref="DerEnumerated"/> from a tagged object.</summary>
+        /// <param name="taggedObject">The tagged object.</param>
+        /// <param name="declaredExplicit">true if the tagging is explicit, false if implicit.</param>
+        /// <returns>The <see cref="DerEnumerated"/>.</returns>
         public static DerEnumerated GetInstance(Asn1TaggedObject taggedObject, bool declaredExplicit)
         {
             return (DerEnumerated)Meta.Instance.GetContextTagged(taggedObject, declaredExplicit);
         }
 
+        /// <summary>Return an <see cref="DerEnumerated"/> from the given element, if it is one.</summary>
+        /// <param name="element">The element.</param>
+        /// <returns>The <see cref="DerEnumerated"/>, or null if <paramref name="element"/> is null.</returns>
         public static DerEnumerated GetOptional(Asn1Encodable element)
         {
             if (element == null)
@@ -65,6 +78,10 @@ namespace Org.BouncyCastle.Asn1
             return null;
         }
 
+        /// <summary>Return an <see cref="DerEnumerated"/> from a tagged object.</summary>
+        /// <param name="taggedObject">The tagged object.</param>
+        /// <param name="declaredExplicit">true if the tagging is explicit, false if implicit.</param>
+        /// <returns>The <see cref="DerEnumerated"/>.</returns>
         public static DerEnumerated GetTagged(Asn1TaggedObject taggedObject, bool declaredExplicit)
         {
             return (DerEnumerated)Meta.Instance.GetTagged(taggedObject, declaredExplicit);
@@ -75,6 +92,8 @@ namespace Org.BouncyCastle.Asn1
         private readonly byte[] m_contents;
         private readonly int m_start;
 
+        /// <summary>Create a new <see cref="DerEnumerated"/>.</summary>
+        /// <param name="val">The val.</param>
         public DerEnumerated(int val)
         {
             if (val < 0)
@@ -84,6 +103,8 @@ namespace Org.BouncyCastle.Asn1
             m_start = 0;
         }
 
+        /// <summary>Create a new <see cref="DerEnumerated"/>.</summary>
+        /// <param name="val">The val.</param>
         public DerEnumerated(long val)
         {
             if (val < 0L)
@@ -93,6 +114,8 @@ namespace Org.BouncyCastle.Asn1
             m_start = 0;
         }
 
+        /// <summary>Create a new <see cref="DerEnumerated"/>.</summary>
+        /// <param name="val">The val.</param>
         public DerEnumerated(BigInteger val)
         {
             if (val.SignValue < 0)
@@ -102,6 +125,8 @@ namespace Org.BouncyCastle.Asn1
             m_start = 0;
         }
 
+        /// <summary>Create a new <see cref="DerEnumerated"/>.</summary>
+        /// <param name="contents">The contents.</param>
         public DerEnumerated(byte[] contents)
             : this(contents, clone: true)
         {
@@ -118,6 +143,7 @@ namespace Org.BouncyCastle.Asn1
             m_start = DerInteger.SignBytesToSkip(this.m_contents);
         }
 
+        /// <summary>Gets the value.</summary>
         // NB: The BigInteger constructor tolerates any redundant sign bytes (per 'AllowUnsafe')
         public BigInteger Value => new BigInteger(m_contents);
 
@@ -135,6 +161,7 @@ namespace Org.BouncyCastle.Asn1
                 && Value.Equals(x);
         }
 
+        /// <summary>Gets the int value exact.</summary>
         public int IntValueExact
         {
             get
@@ -159,12 +186,14 @@ namespace Org.BouncyCastle.Asn1
         internal sealed override DerEncoding GetEncodingDerImplicit(int tagClass, int tagNo) =>
             new PrimitiveDerEncoding(tagClass, tagNo, m_contents);
 
+        /// <inheritdoc/>
         protected override bool Asn1Equals(Asn1Object asn1Object)
         {
             return asn1Object is DerEnumerated that
                 && Arrays.AreEqual(this.m_contents, that.m_contents);
         }
 
+        /// <inheritdoc/>
         protected override int Asn1GetHashCode() => Arrays.GetHashCode(m_contents);
 
         private static DerEnumerated CreatePrimitive(byte[] contents, bool clone)
