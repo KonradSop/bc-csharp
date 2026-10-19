@@ -105,6 +105,8 @@ namespace Org.BouncyCastle.Utilities.Bzip2
         int j2;
         int z;
 
+        /// <summary>Create a new <see cref="CBZip2InputStream"/>.</summary>
+        /// <param name="zStream">The z stream.</param>
         public CBZip2InputStream(Stream zStream)
         {
             ll8 = null;
@@ -134,6 +136,7 @@ namespace Org.BouncyCastle.Utilities.Bzip2
             BeginBlock();
         }
 
+        /// <inheritdoc/>
         public override int Read(byte[] buffer, int offset, int count)
         {
             Streams.ValidateBufferArguments(buffer, offset, count);
@@ -155,6 +158,7 @@ namespace Org.BouncyCastle.Utilities.Bzip2
             return pos;
         }
 
+        /// <inheritdoc/>
         public override int ReadByte()
         {
             if (streamEnd)
@@ -261,6 +265,7 @@ namespace Org.BouncyCastle.Utilities.Bzip2
             base.Dispose(disposing);
         }
 
+        /// <inheritdoc/>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -824,11 +829,14 @@ namespace Org.BouncyCastle.Utilities.Bzip2
     public class CBZip2InputStreamLeaveOpen
         : CBZip2InputStream
     {
+        /// <summary>Create a new <see cref="CBZip2InputStreamLeaveOpen"/>.</summary>
+        /// <param name="outStream">The output stream.</param>
         public CBZip2InputStreamLeaveOpen(Stream outStream)
             : base(outStream)
         {
         }
 
+        /// <inheritdoc/>
         protected override void Dispose(bool disposing)
         {
             Detach(disposing);

@@ -63,16 +63,24 @@ namespace Org.BouncyCastle.Utilities.Zlib
         protected Stream output;
         protected bool closed;
 
+        /// <summary>Create a new <see cref="ZOutputStream"/>.</summary>
+        /// <param name="output">The buffer to write the output to.</param>
         public ZOutputStream(Stream output)
             : this(output, false)
         {
         }
 
+        /// <summary>Create a new <see cref="ZOutputStream"/>.</summary>
+        /// <param name="output">The buffer to write the output to.</param>
+        /// <param name="nowrap">true if nowrap, false otherwise.</param>
         public ZOutputStream(Stream output, bool nowrap)
             : this(output, GetDefaultZStream(nowrap))
         {
         }
 
+        /// <summary>Create a new <see cref="ZOutputStream"/>.</summary>
+        /// <param name="output">The buffer to write the output to.</param>
+        /// <param name="z">The result.</param>
         public ZOutputStream(Stream output, ZStream z)
             : base()
         {
@@ -93,11 +101,18 @@ namespace Org.BouncyCastle.Utilities.Zlib
             this.z = z;
         }
 
+        /// <summary>Create a new <see cref="ZOutputStream"/>.</summary>
+        /// <param name="output">The buffer to write the output to.</param>
+        /// <param name="level">The level.</param>
         public ZOutputStream(Stream output, int level)
             : this(output, level, false)
         {
         }
 
+        /// <summary>Create a new <see cref="ZOutputStream"/>.</summary>
+        /// <param name="output">The buffer to write the output to.</param>
+        /// <param name="level">The level.</param>
+        /// <param name="nowrap">true if nowrap, false otherwise.</param>
         public ZOutputStream(Stream output, int level, bool nowrap)
             : base()
         {
@@ -118,6 +133,7 @@ namespace Org.BouncyCastle.Utilities.Zlib
             base.Dispose(disposing);
         }
 
+        /// <inheritdoc/>
         protected override void Dispose(bool disposing)
         {
             if (disposing)
@@ -195,27 +211,32 @@ namespace Org.BouncyCastle.Utilities.Zlib
             Flush();
         }
 
+        /// <inheritdoc/>
         public override void Flush()
         {
             output.Flush();
         }
 
+        /// <summary>Gets or sets the flush mode.</summary>
         public virtual int FlushMode
         {
             get { return flushLevel; }
             set { this.flushLevel = value; }
         }
 
+        /// <summary>Gets the total in.</summary>
         public virtual long TotalIn
         {
             get { return z.total_in; }
         }
 
+        /// <summary>Gets the total out.</summary>
         public virtual long TotalOut
         {
             get { return z.total_out; }
         }
 
+        /// <inheritdoc/>
         public override void Write(byte[] buffer, int offset, int count)
         {
             Streams.ValidateBufferArguments(buffer, offset, count);
@@ -247,6 +268,7 @@ namespace Org.BouncyCastle.Utilities.Zlib
             while (z.avail_in > 0 || z.avail_out == 0);
         }
 
+        /// <inheritdoc/>
         public override void WriteByte(byte value)
         {
             buf1[0] = value;
@@ -257,31 +279,47 @@ namespace Org.BouncyCastle.Utilities.Zlib
     public class ZOutputStreamLeaveOpen
         : ZOutputStream
     {
+        /// <summary>Create a new <see cref="ZOutputStreamLeaveOpen"/>.</summary>
+        /// <param name="output">The buffer to write the output to.</param>
         public ZOutputStreamLeaveOpen(Stream output)
             : base(output)
         {
         }
 
+        /// <summary>Create a new <see cref="ZOutputStreamLeaveOpen"/>.</summary>
+        /// <param name="output">The buffer to write the output to.</param>
+        /// <param name="nowrap">true if nowrap, false otherwise.</param>
         public ZOutputStreamLeaveOpen(Stream output, bool nowrap)
             : base(output, nowrap)
         {
         }
 
+        /// <summary>Create a new <see cref="ZOutputStreamLeaveOpen"/>.</summary>
+        /// <param name="output">The buffer to write the output to.</param>
+        /// <param name="z">The result.</param>
         public ZOutputStreamLeaveOpen(Stream output, ZStream z)
             : base(output, z)
         {
         }
 
+        /// <summary>Create a new <see cref="ZOutputStreamLeaveOpen"/>.</summary>
+        /// <param name="output">The buffer to write the output to.</param>
+        /// <param name="level">The level.</param>
         public ZOutputStreamLeaveOpen(Stream output, int level)
             : base(output, level)
         {
         }
 
+        /// <summary>Create a new <see cref="ZOutputStreamLeaveOpen"/>.</summary>
+        /// <param name="output">The buffer to write the output to.</param>
+        /// <param name="level">The level.</param>
+        /// <param name="nowrap">true if nowrap, false otherwise.</param>
         public ZOutputStreamLeaveOpen(Stream output, int level, bool nowrap)
             : base(output, level, nowrap)
         {
         }
 
+        /// <inheritdoc/>
         protected override void Dispose(bool disposing)
         {
             Detach(disposing);
