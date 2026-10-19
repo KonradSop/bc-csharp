@@ -31,6 +31,7 @@ namespace Org.BouncyCastle.Tls
         /// <summary>Gets the response.</summary>
         public object Response => m_response;
 
+        /// <summary>Gets the OCSP response, if this is a status of type OCSP.</summary>
         public OcspResponse OcspResponse
         {
             get
