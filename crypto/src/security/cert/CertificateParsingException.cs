@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Org.BouncyCastle.Security.Certificates
 {
+    /// <summary>Exception thrown when a certificate cannot be parsed.</summary>
     [Serializable]
     public class CertificateParsingException
         : CertificateException

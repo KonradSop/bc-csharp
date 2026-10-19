@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Org.BouncyCastle.Security.Certificates
 {
+    /// <summary>Base class for certificate-related exceptions.</summary>
     [Serializable]
     public class CertificateException
         : GeneralSecurityException
