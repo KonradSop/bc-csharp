@@ -14,8 +14,10 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             m_lmOtsParameters = lmOtsParameters;
         }
 
+        /// <summary>Gets the LM sig parameters.</summary>
         public LMSigParameters LMSigParameters => m_lmSigParameters;
 
+        /// <summary>Gets the LM ots parameters.</summary>
         public LMOtsParameters LMOtsParameters => m_lmOtsParameters;
     }
 }
