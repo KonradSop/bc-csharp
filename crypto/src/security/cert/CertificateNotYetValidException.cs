@@ -30,8 +30,8 @@ namespace Org.BouncyCastle.Security.Certificates
         }
 
         /// <summary>Create a new <see cref="CertificateNotYetValidException"/>.</summary>
-        /// <param name="info">The info.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="info">The serialization information.</param>
+        /// <param name="context">The streaming context.</param>
         protected CertificateNotYetValidException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

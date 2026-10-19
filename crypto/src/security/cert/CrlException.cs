@@ -30,8 +30,8 @@ namespace Org.BouncyCastle.Security.Certificates
         }
 
         /// <summary>Create a new <see cref="CrlException"/>.</summary>
-        /// <param name="info">The info.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="info">The serialization information.</param>
+        /// <param name="context">The streaming context.</param>
         protected CrlException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
