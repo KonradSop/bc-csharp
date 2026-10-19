@@ -41,6 +41,10 @@ using Org.BouncyCastle.Utilities.IO;
 
 namespace Org.BouncyCastle.Utilities.Zlib
 {
+    /// <summary>
+    /// An output stream that compresses (or decompresses) the data written to it and writes the result to an underlying
+    /// stream.
+    /// </summary>
     public class ZOutputStream
         : BaseOutputStream
     {
@@ -53,16 +57,21 @@ namespace Org.BouncyCastle.Utilities.Zlib
 
         private const int BufferSize = 4096;
 
+        /// <summary>The zlib stream state.</summary>
         protected ZStream z;
         /// <summary>The flush level.</summary>
         protected int flushLevel = JZlib.Z_NO_FLUSH;
+        /// <summary>The buffer for data to be written to the underlying stream.</summary>
         // TODO Allow custom buf
         protected byte[] buf = new byte[BufferSize];
         /// <summary>The buf 1.</summary>
         protected byte[] buf1 = new byte[1];
+        /// <summary>true if the stream compresses data, false if it decompresses.</summary>
         protected bool compress;
 
+        /// <summary>The underlying stream.</summary>
         protected Stream output;
+        /// <summary>true once the stream has been closed.</summary>
         protected bool closed;
 
         /// <summary>Create a new <see cref="ZOutputStream"/>.</summary>
@@ -126,6 +135,8 @@ namespace Org.BouncyCastle.Utilities.Zlib
             this.z.deflateInit(level, nowrap);
         }
 
+        /// <summary>Dispose of this stream without disposing of the underlying stream.</summary>
+        /// <param name="disposing">true when called from <c>Dispose</c>, false when called from a finalizer.</param>
         protected void Detach(bool disposing)
         {
             if (disposing)
@@ -173,6 +184,7 @@ namespace Org.BouncyCastle.Utilities.Zlib
             }
         }
 
+        /// <summary>Release the resources used by the zlib state.</summary>
         public virtual void End()
         {
             if (z == null)
@@ -185,6 +197,9 @@ namespace Org.BouncyCastle.Utilities.Zlib
             z = null;
         }
 
+        /// <summary>
+        /// Finish the compressed (or decompressed) data, flushing all pending output to the underlying stream.
+        /// </summary>
         public virtual void Finish()
         {
             do
@@ -278,6 +293,7 @@ namespace Org.BouncyCastle.Utilities.Zlib
         }
     }
 
+    /// <summary>A <see cref="ZOutputStream"/> that leaves the underlying stream open when it is disposed.</summary>
     public class ZOutputStreamLeaveOpen
         : ZOutputStream
     {
