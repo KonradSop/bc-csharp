@@ -53,7 +53,7 @@ namespace Org.BouncyCastle.Security
                     keyStructure.Coefficient);
             }
             // TODO?
-            //			else if (algOid.Equals(X9ObjectIdentifiers.DHPublicNumber))
+            // else if (algOid.Equals(X9ObjectIdentifiers.DHPublicNumber))
             else if (algOid.Equals(PkcsObjectIdentifiers.DhKeyAgreement))
             {
                 DHParameter para = DHParameter.GetInstance(algID.Parameters);
