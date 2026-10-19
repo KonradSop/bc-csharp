@@ -68,6 +68,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
 
         internal LMOtsPrivateKey PrivateKey => m_privateKey;
 
+        /// <summary>Gets the public key.</summary>
         // TODO[api] Make internal
         public LMOtsPublicKey PublicKey => m_publicKey;
 

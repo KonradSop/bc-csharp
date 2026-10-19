@@ -76,6 +76,10 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             this.m_publicKey = parent.m_publicKey;
         }
 
+        /// <summary>Return an <see cref="LmsPrivateKeyParameters"/> from the given object.</summary>
+        /// <param name="privEnc">The priv enc.</param>
+        /// <param name="pubEnc">The pub enc.</param>
+        /// <returns>The <see cref="LmsPrivateKeyParameters"/>, or null if <paramref name="src"/> is null.</returns>
         public static LmsPrivateKeyParameters GetInstance(byte[] privEnc, byte[] pubEnc) =>
             Parse(privEnc, 0, privEnc.Length, LmsPublicKeyParameters.Parse(pubEnc));
 
@@ -257,12 +261,14 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
         [Obsolete("Use 'SigParameters' instead")]
         public LMSigParameters GetSigParameters() => sigParameters;
 
+        /// <summary>Gets the sig parameters.</summary>
         public LMSigParameters SigParameters => sigParameters;
 
         /// <summary>Return the ots parameters.</summary>
         [Obsolete("Use 'OtsParameters' instead")]
         public LMOtsParameters GetOtsParameters() => otsParameters;
 
+        /// <summary>Gets the ots parameters.</summary>
         public LMOtsParameters OtsParameters => otsParameters;
 
         /// <summary>Return the i.</summary>

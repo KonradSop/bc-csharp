@@ -69,6 +69,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
         /// <summary>Return the k.</summary>
         public byte[] GetK() => Arrays.Clone(m_K);
 
+        /// <summary>Gets the parameters.</summary>
         public LMOtsParameters Parameters => m_parameters;
 
         /// <summary>Gets the q.</summary>
