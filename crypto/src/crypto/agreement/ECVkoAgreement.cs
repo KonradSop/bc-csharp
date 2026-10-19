@@ -9,7 +9,7 @@ using Org.BouncyCastle.Utilities;
 namespace Org.BouncyCastle.Crypto.Agreement
 {
     /// <summary>
-    /// GOST VKO key agreement class - RFC 7836 Section 4.3 
+    /// GOST VKO key agreement class - RFC 7836 Section 4.3
     /// </summary>
     public sealed class ECVkoAgreement
         : IRawAgreement
