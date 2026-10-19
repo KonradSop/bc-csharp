@@ -13,7 +13,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
         private static int ITER_K = 20;
         private static int ITER_PREV = 23;
         private static int ITER_J = 22;
-        
+
         internal static int SEED_RANDOMISER_INDEX = ~2;
         internal static int MAX_HASH = 32;
         internal static ushort D_MESG = 0x8181;
@@ -188,7 +188,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
 #pragma warning restore CS0618 // Type or member is obsolete
         }
 
-        public static byte[] LMOtsValidateSignatureCalculate(LMOtsPublicKey publicKey, LMOtsSignature signature, 
+        public static byte[] LMOtsValidateSignatureCalculate(LMOtsPublicKey publicKey, LMOtsSignature signature,
             byte[] message)
         {
             LmsContext ctx = publicKey.CreateOtsContext(signature);

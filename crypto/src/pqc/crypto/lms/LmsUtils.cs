@@ -105,7 +105,7 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             }
 
 #if NETCOREAPP2_1_OR_GREATER || NETSTANDARD2_1_OR_GREATER
-            public int DoFinal(Span<byte> output) 
+            public int DoFinal(Span<byte> output)
             {
                 int digestSize = m_digest.GetDigestSize();
                 Span<byte> buf = digestSize <= 128
