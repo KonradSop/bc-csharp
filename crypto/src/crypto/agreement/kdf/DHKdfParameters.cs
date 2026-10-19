@@ -3,6 +3,7 @@ using Org.BouncyCastle.Utilities;
 
 namespace Org.BouncyCastle.Crypto.Agreement.Kdf
 {
+    /// <summary>Parameters for the key derivation function used with Diffie-Hellman key agreement.</summary>
     public class DHKdfParameters
         : IDerivationParameters
     {
@@ -11,11 +12,20 @@ namespace Org.BouncyCastle.Crypto.Agreement.Kdf
         private readonly byte[] m_z;
         private readonly byte[] m_extraInfo;
 
+        /// <summary>Create a new <see cref="DHKdfParameters"/>.</summary>
+        /// <param name="algorithm">The algorithm.</param>
+        /// <param name="keySize">The key size in bits.</param>
+        /// <param name="z">The result.</param>
         public DHKdfParameters(DerObjectIdentifier algorithm, int keySize, byte[] z)
             : this(algorithm, keySize, z, null)
         {
         }
 
+        /// <summary>Create a new <see cref="DHKdfParameters"/>.</summary>
+        /// <param name="algorithm">The algorithm.</param>
+        /// <param name="keySize">The key size in bits.</param>
+        /// <param name="z">The result.</param>
+        /// <param name="extraInfo">The extra info.</param>
         public DHKdfParameters(DerObjectIdentifier algorithm, int keySize, byte[] z, byte[] extraInfo)
         {
             m_algorithm = algorithm;
@@ -24,14 +34,18 @@ namespace Org.BouncyCastle.Crypto.Agreement.Kdf
             m_extraInfo = Arrays.Clone(extraInfo);
         }
 
+        /// <summary>Gets the algorithm.</summary>
         public DerObjectIdentifier Algorithm => m_algorithm;
 
         internal byte[] ExtraInfo => m_extraInfo;
 
+        /// <summary>Return the z.</summary>
         public byte[] GetZ() => Arrays.CopyBuffer(m_z);
 
+        /// <summary>Return the extra info.</summary>
         public byte[] GetExtraInfo() => Arrays.Clone(m_extraInfo);
 
+        /// <summary>Gets the key size.</summary>
         public int KeySize => m_keySize;
 
         internal byte[] Z => m_z;
