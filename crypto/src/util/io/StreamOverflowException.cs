@@ -31,8 +31,8 @@ namespace Org.BouncyCastle.Utilities.IO
         }
 
         /// <summary>Create a new <see cref="StreamOverflowException"/>.</summary>
-        /// <param name="info">The info.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="info">The serialization information.</param>
+        /// <param name="context">The streaming context.</param>
         protected StreamOverflowException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

@@ -30,8 +30,8 @@ namespace Org.BouncyCastle.Utilities.IO.Pem
         }
 
         /// <summary>Create a new <see cref="PemGenerationException"/>.</summary>
-        /// <param name="info">The info.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="info">The serialization information.</param>
+        /// <param name="context">The streaming context.</param>
         protected PemGenerationException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
