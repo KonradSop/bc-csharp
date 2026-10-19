@@ -36,12 +36,16 @@ namespace Org.BouncyCastle.Tsp
             m_failureCode = failureCode;
         }
 
+        /// <summary>Create a new <see cref="TspValidationException"/>.</summary>
+        /// <param name="info">The info.</param>
+        /// <param name="context">The context.</param>
         protected TspValidationException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             m_failureCode = info.GetInt32("failureCode");
         }
 
+        /// <inheritdoc/>
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
