@@ -14,6 +14,7 @@ namespace Org.BouncyCastle.Crypto.Agreement.Srp
         protected BigInteger g;
         protected IDigest digest;
 
+        /// <summary>Create a new <see cref="Srp6VerifierGenerator"/>.</summary>
         public Srp6VerifierGenerator()
         {
         }
