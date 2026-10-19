@@ -743,6 +743,7 @@ namespace Org.BouncyCastle.Tls
                 securityParameters.CipherSuite, m_serverExtensions);
         }
 
+        /// <inheritdoc/>
         protected override TlsContext Context
         {
             get { return m_tlsServerContext; }
@@ -753,6 +754,7 @@ namespace Org.BouncyCastle.Tls
             get { return m_tlsServerContext; }
         }
 
+        /// <inheritdoc/>
         protected override TlsPeer Peer
         {
             get { return m_tlsServer; }
