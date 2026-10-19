@@ -33,8 +33,8 @@ namespace Org.BouncyCastle.OpenSsl
         }
 
         /// <summary>Create a new <see cref="PasswordException"/>.</summary>
-        /// <param name="info">The info.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="info">The serialization information.</param>
+        /// <param name="context">The streaming context.</param>
         protected PasswordException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
