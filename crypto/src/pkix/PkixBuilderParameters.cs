@@ -93,7 +93,7 @@ namespace Org.BouncyCastle.Pkix
         /**
          * Can alse handle <code>ExtendedPKIXBuilderParameters</code> and
          * <code>PKIXBuilderParameters</code>.
-         * 
+         *
          * @param params Parameters to set.
          * @see Org.BouncyCastle.X509.ExtendedPKIXParameters#setParams(java.security.cert.PKIXParameters)
          */
