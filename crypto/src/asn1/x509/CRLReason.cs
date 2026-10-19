@@ -20,16 +20,26 @@ namespace Org.BouncyCastle.Asn1.X509
     public class CrlReason
         : DerEnumerated
     {
+        /// <summary>The <c>Unspecified</c> constant, with the value <c>0</c>.</summary>
         public const int Unspecified = 0;
+        /// <summary>The <c>KeyCompromise</c> constant, with the value <c>1</c>.</summary>
         public const int KeyCompromise = 1;
+        /// <summary>The <c>CACompromise</c> constant, with the value <c>2</c>.</summary>
         public const int CACompromise = 2;
+        /// <summary>The <c>AffiliationChanged</c> constant, with the value <c>3</c>.</summary>
         public const int AffiliationChanged = 3;
+        /// <summary>The <c>Superseded</c> constant, with the value <c>4</c>.</summary>
         public const int Superseded = 4;
+        /// <summary>The <c>CessationOfOperation</c> constant, with the value <c>5</c>.</summary>
         public const int CessationOfOperation  = 5;
+        /// <summary>The <c>CertificateHold</c> constant, with the value <c>6</c>.</summary>
         public const int CertificateHold = 6;
+        /// <summary>The <c>RemoveFromCrl</c> constant, with the value <c>8</c>.</summary>
         // 7 -> Unknown
         public const int RemoveFromCrl = 8;
+        /// <summary>The <c>PrivilegeWithdrawn</c> constant, with the value <c>9</c>.</summary>
         public const int PrivilegeWithdrawn = 9;
+        /// <summary>The <c>AACompromise</c> constant, with the value <c>10</c>.</summary>
         public const int AACompromise = 10;
 
         private static readonly string[] ReasonString = new string[]
@@ -39,17 +49,22 @@ namespace Org.BouncyCastle.Asn1.X509
             "RemoveFromCrl", "PrivilegeWithdrawn", "AACompromise"
         };
 
+        /// <summary>Create a new <see cref="CrlReason"/>.</summary>
+        /// <param name="reason">The reason.</param>
         public CrlReason(
             int reason)
             : base(reason)
         {
         }
 
+        /// <summary>Create a new <see cref="CrlReason"/>.</summary>
+        /// <param name="reason">The reason.</param>
         public CrlReason(DerEnumerated reason)
             : base(reason.IntValueExact)
         {
         }
 
+        /// <inheritdoc/>
         public override string ToString()
         {
             int reason = IntValueExact;
