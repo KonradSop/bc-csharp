@@ -30,8 +30,8 @@ namespace Org.BouncyCastle.Ocsp
         }
 
         /// <summary>Create a new <see cref="OcspException"/>.</summary>
-        /// <param name="info">The info.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="info">The serialization information.</param>
+        /// <param name="context">The streaming context.</param>
         protected OcspException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
