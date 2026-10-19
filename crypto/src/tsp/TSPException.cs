@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Org.BouncyCastle.Tsp
 {
+    /// <summary>Exception thrown when a time stamp request, response or token cannot be processed.</summary>
     [Serializable]
     public class TspException
         : Exception
