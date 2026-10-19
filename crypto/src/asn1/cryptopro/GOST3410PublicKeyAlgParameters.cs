@@ -53,11 +53,11 @@ namespace Org.BouncyCastle.Asn1.CryptoPro
 
         public DerObjectIdentifier PublicKeyParamSet => m_publicKeyParamSet;
 
-		public DerObjectIdentifier DigestParamSet => m_digestParamSet;
+        public DerObjectIdentifier DigestParamSet => m_digestParamSet;
 
-		public DerObjectIdentifier EncryptionParamSet => m_encryptionParamSet;
+        public DerObjectIdentifier EncryptionParamSet => m_encryptionParamSet;
 
-		public override Asn1Object ToAsn1Object()
+        public override Asn1Object ToAsn1Object()
         {
             return m_encryptionParamSet == null
                 ?  new DerSequence(m_publicKeyParamSet, m_digestParamSet)
