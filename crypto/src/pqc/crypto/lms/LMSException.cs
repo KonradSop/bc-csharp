@@ -31,8 +31,8 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
         }
 
         /// <summary>Create a new <see cref="LmsException"/>.</summary>
-        /// <param name="info">The info.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="info">The serialization information.</param>
+        /// <param name="context">The streaming context.</param>
         protected LmsException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
