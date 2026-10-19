@@ -3,6 +3,7 @@ using System.Runtime.Serialization;
 
 namespace Org.BouncyCastle.Bcpg
 {
+    /// <summary>Exception thrown when a packet has a version that is not supported.</summary>
     [Serializable]
     public class UnsupportedPacketVersionException
         : Exception

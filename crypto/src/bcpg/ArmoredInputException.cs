@@ -4,6 +4,7 @@ using System.Runtime.Serialization;
 
 namespace Org.BouncyCastle.Bcpg
 {
+    /// <summary>Exception thrown when armored input is malformed.</summary>
     [Serializable]
     public class ArmoredInputException
         : IOException
