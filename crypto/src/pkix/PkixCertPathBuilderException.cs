@@ -32,8 +32,8 @@ namespace Org.BouncyCastle.Pkix
         }
 
         /// <summary>Create a new <see cref="PkixCertPathBuilderException"/>.</summary>
-        /// <param name="info">The info.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="info">The serialization information.</param>
+        /// <param name="context">The streaming context.</param>
         protected PkixCertPathBuilderException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
