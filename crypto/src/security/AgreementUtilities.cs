@@ -232,7 +232,7 @@ namespace Org.BouncyCastle.Security
 
             throw new SecurityUtilityException("Raw Agreement OID not recognised.");
         }
- 
+
         public static IRawAgreement GetRawAgreement(string algorithm)
         {
             if (algorithm == null)
