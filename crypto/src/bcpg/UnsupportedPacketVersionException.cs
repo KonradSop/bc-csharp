@@ -30,8 +30,8 @@ namespace Org.BouncyCastle.Bcpg
         }
 
         /// <summary>Create a new <see cref="UnsupportedPacketVersionException"/>.</summary>
-        /// <param name="info">The info.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="info">The serialization information.</param>
+        /// <param name="context">The streaming context.</param>
         protected UnsupportedPacketVersionException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

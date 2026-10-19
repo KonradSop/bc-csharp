@@ -31,8 +31,8 @@ namespace Org.BouncyCastle.Bcpg
         }
 
         /// <summary>Create a new <see cref="MalformedPacketException"/>.</summary>
-        /// <param name="info">The info.</param>
-        /// <param name="context">The context.</param>
+        /// <param name="info">The serialization information.</param>
+        /// <param name="context">The streaming context.</param>
         protected MalformedPacketException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
