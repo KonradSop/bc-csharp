@@ -63,12 +63,16 @@ namespace Org.BouncyCastle.Pkix
             m_index = index;
         }
 
+        /// <summary>Create a new <see cref="PkixCertPathValidatorException"/>.</summary>
+        /// <param name="info">The info.</param>
+        /// <param name="context">The context.</param>
         protected PkixCertPathValidatorException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
             m_index = info.GetInt32("index");
         }
 
+        /// <inheritdoc/>
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);

@@ -8,21 +8,30 @@ namespace Org.BouncyCastle.Pkix
     public class PkixNameConstraintValidatorException
         : Exception
     {
+        /// <summary>Create a new <see cref="PkixNameConstraintValidatorException"/>.</summary>
         public PkixNameConstraintValidatorException()
             : base()
         {
         }
 
+        /// <summary>Create a new <see cref="PkixNameConstraintValidatorException"/>.</summary>
+        /// <param name="message">The message.</param>
         public PkixNameConstraintValidatorException(string message)
             : base(message)
         {
         }
 
+        /// <summary>Create a new <see cref="PkixNameConstraintValidatorException"/>.</summary>
+        /// <param name="message">The message.</param>
+        /// <param name="innerException">The inner exception.</param>
         public PkixNameConstraintValidatorException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
 
+        /// <summary>Create a new <see cref="PkixNameConstraintValidatorException"/>.</summary>
+        /// <param name="info">The info.</param>
+        /// <param name="context">The context.</param>
         protected PkixNameConstraintValidatorException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
