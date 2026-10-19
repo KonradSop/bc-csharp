@@ -350,11 +350,18 @@ namespace Org.BouncyCastle.Crypto.Operators
             m_random = random;
         }
 
+        /// <summary>Create a new <see cref="Asn1SignatureFactory"/>.</summary>
+        /// <param name="algorithm">The algorithm.</param>
+        /// <param name="privateKey">The private key.</param>
         public Asn1SignatureFactory(AlgorithmIdentifier algorithm, AsymmetricKeyParameter privateKey)
             : this(algorithm, privateKey, random: null)
         {
         }
 
+        /// <summary>Create a new <see cref="Asn1SignatureFactory"/>.</summary>
+        /// <param name="algorithm">The algorithm.</param>
+        /// <param name="privateKey">The private key.</param>
+        /// <param name="random">The source of randomness.</param>
         public Asn1SignatureFactory(AlgorithmIdentifier algorithm, AsymmetricKeyParameter privateKey,
             SecureRandom random)
         {
@@ -371,8 +378,10 @@ namespace Org.BouncyCastle.Crypto.Operators
             m_random = random;
         }
 
+        /// <inheritdoc/>
         public object AlgorithmDetails => m_algID;
 
+        /// <inheritdoc/>
         public IStreamCalculator<IBlockResult> CreateCalculator()
         {
             ISigner signer = SignerUtilities.InitSigner(m_algorithm, forSigning: true, m_privateKey, m_random);
@@ -416,6 +425,9 @@ namespace Org.BouncyCastle.Crypto.Operators
             m_publicKey = publicKey;
         }
 
+        /// <summary>Create a new <see cref="Asn1VerifierFactory"/>.</summary>
+        /// <param name="algorithm">The algorithm.</param>
+        /// <param name="publicKey">The public key.</param>
         public Asn1VerifierFactory(AlgorithmIdentifier algorithm, AsymmetricKeyParameter publicKey)
         {
             if (algorithm == null)
@@ -430,8 +442,10 @@ namespace Org.BouncyCastle.Crypto.Operators
             m_publicKey = publicKey;
         }
 
+        /// <inheritdoc/>
         public object AlgorithmDetails => m_algID;
 
+        /// <inheritdoc/>
         public IStreamCalculator<IVerifier> CreateCalculator()
         {
             ISigner verifier = SignerUtilities.InitSigner(m_algorithm, forSigning: false, m_publicKey, random: null);
@@ -461,6 +475,7 @@ namespace Org.BouncyCastle.Crypto.Operators
             m_publicKey = publicKey;
         }
 
+        /// <inheritdoc/>
         public IVerifierFactory CreateVerifierFactory(object algorithmDetails) =>
             new Asn1VerifierFactory((AlgorithmIdentifier)algorithmDetails, m_publicKey);
 
