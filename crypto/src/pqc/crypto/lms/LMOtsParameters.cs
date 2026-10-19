@@ -9,26 +9,43 @@ using Org.BouncyCastle.Utilities.IO;
 
 namespace Org.BouncyCastle.Pqc.Crypto.Lms
 {
+    /// <summary>The LM-OTS (Leighton-Micali one-time signature) parameter sets.</summary>
     public sealed class LMOtsParameters
     {
+        /// <summary>The LM-OTS parameter set using SHA-256 with n = 32 and Winternitz parameter w = 1.</summary>
         public static LMOtsParameters sha256_n32_w1 = new LMOtsParameters(1, 32, 1, 265, 7, 8516, NistObjectIdentifiers.IdSha256);
+        /// <summary>The LM-OTS parameter set using SHA-256 with n = 32 and Winternitz parameter w = 2.</summary>
         public static LMOtsParameters sha256_n32_w2 = new LMOtsParameters(2, 32, 2, 133, 6, 4292, NistObjectIdentifiers.IdSha256);
+        /// <summary>The LM-OTS parameter set using SHA-256 with n = 32 and Winternitz parameter w = 4.</summary>
         public static LMOtsParameters sha256_n32_w4 = new LMOtsParameters(3, 32, 4, 67, 4, 2180, NistObjectIdentifiers.IdSha256);
+        /// <summary>The LM-OTS parameter set using SHA-256 with n = 32 and Winternitz parameter w = 8.</summary>
         public static LMOtsParameters sha256_n32_w8 = new LMOtsParameters(4, 32, 8, 34, 0, 1124, NistObjectIdentifiers.IdSha256);
 
+        /// <summary>The LM-OTS parameter set using SHA-256 with n = 24 and Winternitz parameter w = 1.</summary>
         public static LMOtsParameters sha256_n24_w1 = new LMOtsParameters(5, 24, 1, 200, 8, 5436, NistObjectIdentifiers.IdSha256);
+        /// <summary>The LM-OTS parameter set using SHA-256 with n = 24 and Winternitz parameter w = 2.</summary>
         public static LMOtsParameters sha256_n24_w2 = new LMOtsParameters(6, 24, 2, 101, 6, 2940, NistObjectIdentifiers.IdSha256);
+        /// <summary>The LM-OTS parameter set using SHA-256 with n = 24 and Winternitz parameter w = 4.</summary>
         public static LMOtsParameters sha256_n24_w4 = new LMOtsParameters(7, 24, 4, 51, 4, 1500, NistObjectIdentifiers.IdSha256);
+        /// <summary>The LM-OTS parameter set using SHA-256 with n = 24 and Winternitz parameter w = 8.</summary>
         public static LMOtsParameters sha256_n24_w8 = new LMOtsParameters(8, 24, 8, 26, 0, 1020, NistObjectIdentifiers.IdSha256);
 
+        /// <summary>The LM-OTS parameter set using SHAKE256 with n = 32 and Winternitz parameter w = 1.</summary>
         public static LMOtsParameters shake256_n32_w1 = new LMOtsParameters(9, 32, 1, 265, 7, 8516, NistObjectIdentifiers.IdShake256Len);
+        /// <summary>The LM-OTS parameter set using SHAKE256 with n = 32 and Winternitz parameter w = 2.</summary>
         public static LMOtsParameters shake256_n32_w2 = new LMOtsParameters(10, 32, 2, 133, 6, 4292, NistObjectIdentifiers.IdShake256Len);
+        /// <summary>The LM-OTS parameter set using SHAKE256 with n = 32 and Winternitz parameter w = 4.</summary>
         public static LMOtsParameters shake256_n32_w4 = new LMOtsParameters(11, 32, 4, 67, 4, 2180, NistObjectIdentifiers.IdShake256Len);
+        /// <summary>The LM-OTS parameter set using SHAKE256 with n = 32 and Winternitz parameter w = 8.</summary>
         public static LMOtsParameters shake256_n32_w8 = new LMOtsParameters(12, 32, 8, 34, 0, 1124, NistObjectIdentifiers.IdShake256Len);
 
+        /// <summary>The LM-OTS parameter set using SHAKE256 with n = 24 and Winternitz parameter w = 1.</summary>
         public static LMOtsParameters shake256_n24_w1 = new LMOtsParameters(13, 24, 1, 200, 8, 5436, NistObjectIdentifiers.IdShake256Len);
+        /// <summary>The LM-OTS parameter set using SHAKE256 with n = 24 and Winternitz parameter w = 2.</summary>
         public static LMOtsParameters shake256_n24_w2 = new LMOtsParameters(14, 24, 2, 101, 6, 2940, NistObjectIdentifiers.IdShake256Len);
+        /// <summary>The LM-OTS parameter set using SHAKE256 with n = 24 and Winternitz parameter w = 4.</summary>
         public static LMOtsParameters shake256_n24_w4 = new LMOtsParameters(15, 24, 4, 51, 4, 1500, NistObjectIdentifiers.IdShake256Len);
+        /// <summary>The LM-OTS parameter set using SHAKE256 with n = 24 and Winternitz parameter w = 8.</summary>
         public static LMOtsParameters shake256_n24_w8 = new LMOtsParameters(16, 24, 8, 26, 0, 1020, NistObjectIdentifiers.IdShake256Len);
 
         private static Dictionary<int, LMOtsParameters> ParametersByID = new Dictionary<int, LMOtsParameters>
@@ -54,6 +71,9 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             { shake256_n24_w8.ID, shake256_n24_w8 },
         };
 
+        /// <summary>Get a parameter set by its identifier.</summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>The parameter set, or null if the identifier is not known.</returns>
         public static LMOtsParameters GetParametersByID(int id) =>
             CollectionUtilities.GetValueOrNull(ParametersByID, id);
 

@@ -5,6 +5,7 @@ using Org.BouncyCastle.Crypto;
 
 namespace Org.BouncyCastle.Pqc.Crypto.Lms
 {
+    /// <summary>An LMS signer.</summary>
     public sealed class LmsSigner
         : IMessageSigner
     {

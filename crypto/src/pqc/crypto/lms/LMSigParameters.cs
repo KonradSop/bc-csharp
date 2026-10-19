@@ -8,30 +8,51 @@ using Org.BouncyCastle.Utilities.IO;
 
 namespace Org.BouncyCastle.Pqc.Crypto.Lms
 {
+    /// <summary>The LMS parameter sets: hash function, node size and tree height.</summary>
     public sealed class LMSigParameters
     {
+        /// <summary>The LMS parameter set using SHA-256 with n = 32 and tree height h = 5.</summary>
         public static LMSigParameters lms_sha256_n32_h5 = new LMSigParameters(5, 32, 5, NistObjectIdentifiers.IdSha256);
+        /// <summary>The LMS parameter set using SHA-256 with n = 32 and tree height h = 10.</summary>
         public static LMSigParameters lms_sha256_n32_h10 = new LMSigParameters(6, 32, 10, NistObjectIdentifiers.IdSha256);
+        /// <summary>The LMS parameter set using SHA-256 with n = 32 and tree height h = 15.</summary>
         public static LMSigParameters lms_sha256_n32_h15 = new LMSigParameters(7, 32, 15, NistObjectIdentifiers.IdSha256);
+        /// <summary>The LMS parameter set using SHA-256 with n = 32 and tree height h = 20.</summary>
         public static LMSigParameters lms_sha256_n32_h20 = new LMSigParameters(8, 32, 20, NistObjectIdentifiers.IdSha256);
+        /// <summary>The LMS parameter set using SHA-256 with n = 32 and tree height h = 25.</summary>
         public static LMSigParameters lms_sha256_n32_h25 = new LMSigParameters(9, 32, 25, NistObjectIdentifiers.IdSha256);
 
+        /// <summary>The LMS parameter set using SHA-256 with n = 24 and tree height h = 5.</summary>
         public static LMSigParameters lms_sha256_n24_h5 = new LMSigParameters(10, 24, 5, NistObjectIdentifiers.IdSha256);
+        /// <summary>The LMS parameter set using SHA-256 with n = 24 and tree height h = 10.</summary>
         public static LMSigParameters lms_sha256_n24_h10 = new LMSigParameters(11, 24, 10, NistObjectIdentifiers.IdSha256);
+        /// <summary>The LMS parameter set using SHA-256 with n = 24 and tree height h = 15.</summary>
         public static LMSigParameters lms_sha256_n24_h15 = new LMSigParameters(12, 24, 15, NistObjectIdentifiers.IdSha256);
+        /// <summary>The LMS parameter set using SHA-256 with n = 24 and tree height h = 20.</summary>
         public static LMSigParameters lms_sha256_n24_h20 = new LMSigParameters(13, 24, 20, NistObjectIdentifiers.IdSha256);
+        /// <summary>The LMS parameter set using SHA-256 with n = 24 and tree height h = 25.</summary>
         public static LMSigParameters lms_sha256_n24_h25 = new LMSigParameters(14, 24, 25, NistObjectIdentifiers.IdSha256);
 
+        /// <summary>The LMS parameter set using SHAKE256 with n = 32 and tree height h = 5.</summary>
         public static LMSigParameters lms_shake256_n32_h5 = new LMSigParameters(15, 32, 5, NistObjectIdentifiers.IdShake256Len);
+        /// <summary>The LMS parameter set using SHAKE256 with n = 32 and tree height h = 10.</summary>
         public static LMSigParameters lms_shake256_n32_h10 = new LMSigParameters(16, 32, 10, NistObjectIdentifiers.IdShake256Len);
+        /// <summary>The LMS parameter set using SHAKE256 with n = 32 and tree height h = 15.</summary>
         public static LMSigParameters lms_shake256_n32_h15 = new LMSigParameters(17, 32, 15, NistObjectIdentifiers.IdShake256Len);
+        /// <summary>The LMS parameter set using SHAKE256 with n = 32 and tree height h = 20.</summary>
         public static LMSigParameters lms_shake256_n32_h20 = new LMSigParameters(18, 32, 20, NistObjectIdentifiers.IdShake256Len);
+        /// <summary>The LMS parameter set using SHAKE256 with n = 32 and tree height h = 25.</summary>
         public static LMSigParameters lms_shake256_n32_h25 = new LMSigParameters(19, 32, 25, NistObjectIdentifiers.IdShake256Len);
 
+        /// <summary>The LMS parameter set using SHAKE256 with n = 24 and tree height h = 5.</summary>
         public static LMSigParameters lms_shake256_n24_h5 = new LMSigParameters(20, 24, 5, NistObjectIdentifiers.IdShake256Len);
+        /// <summary>The LMS parameter set using SHAKE256 with n = 24 and tree height h = 10.</summary>
         public static LMSigParameters lms_shake256_n24_h10 = new LMSigParameters(21, 24, 10, NistObjectIdentifiers.IdShake256Len);
+        /// <summary>The LMS parameter set using SHAKE256 with n = 24 and tree height h = 15.</summary>
         public static LMSigParameters lms_shake256_n24_h15 = new LMSigParameters(22, 24, 15, NistObjectIdentifiers.IdShake256Len);
+        /// <summary>The LMS parameter set using SHAKE256 with n = 24 and tree height h = 20.</summary>
         public static LMSigParameters lms_shake256_n24_h20 = new LMSigParameters(23, 24, 20, NistObjectIdentifiers.IdShake256Len);
+        /// <summary>The LMS parameter set using SHAKE256 with n = 24 and tree height h = 25.</summary>
         public static LMSigParameters lms_shake256_n24_h25 = new LMSigParameters(24, 24, 25, NistObjectIdentifiers.IdShake256Len);
 
         private static Dictionary<int, LMSigParameters> ParametersByID = new Dictionary<int, LMSigParameters>
@@ -61,6 +82,9 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             { lms_shake256_n24_h25.ID, lms_shake256_n24_h25 },
         };
 
+        /// <summary>Get a parameter set by its identifier.</summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns>The parameter set, or null if the identifier is not known.</returns>
         public static LMSigParameters GetParametersByID(int id) =>
             CollectionUtilities.GetValueOrNull(ParametersByID, id);
 

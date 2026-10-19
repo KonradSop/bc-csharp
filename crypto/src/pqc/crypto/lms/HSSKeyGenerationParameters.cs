@@ -5,6 +5,7 @@ using Org.BouncyCastle.Security;
 
 namespace Org.BouncyCastle.Pqc.Crypto.Lms
 {
+    /// <summary>The parameters for generating HSS keys.</summary>
     public sealed class HssKeyGenerationParameters
         : KeyGenerationParameters
     {
@@ -34,6 +35,9 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
         /// <summary>Gets the depth.</summary>
         public int Depth => m_lmsParameters.Length;
 
+        /// <summary>Get the LMS parameters of a level.</summary>
+        /// <param name="index">The level, starting from 0.</param>
+        /// <returns>The parameters.</returns>
         public LmsParameters GetLmsParameters(int index)
         {
             if (index < 0 || index >= m_lmsParameters.Length)

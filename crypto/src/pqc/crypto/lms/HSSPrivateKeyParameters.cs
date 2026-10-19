@@ -8,6 +8,7 @@ using Org.BouncyCastle.Utilities.IO;
 
 namespace Org.BouncyCastle.Pqc.Crypto.Lms
 {
+    /// <summary>An HSS private key.</summary>
     public class HssPrivateKeyParameters
         : LmsKeyParameters, ILmsContextBasedSigner
     {
@@ -56,7 +57,9 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             m_indexLimit = indexLimit;
         }
 
-        /// <summary>Parse a <see cref="HssPrivateKeyParameters"/> from its encoded private key and public key.</summary>
+        /// <summary>
+        /// Parse a <see cref="HssPrivateKeyParameters"/> from its encoded private key and public key.
+        /// </summary>
         /// <param name="privEnc">The encoded private key.</param>
         /// <param name="pubEnc">The encoded public key.</param>
         /// <returns>The parsed <see cref="HssPrivateKeyParameters"/>.</returns>
@@ -170,6 +173,9 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
         private static HssPrivateKeyParameters MakeCopy(HssPrivateKeyParameters privateKeyParameters) =>
             Parse(privateKeyParameters.GetEncoded());
 
+        /// <summary>Replace the keys and signatures of the hierarchy.</summary>
+        /// <param name="newKeys">The new keys.</param>
+        /// <param name="newSig">The new signatures.</param>
         protected void UpdateHierarchy(IList<LmsPrivateKeyParameters> newKeys, IList<LmsSignature> newSig)
         {
             lock (this)
@@ -179,6 +185,10 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             }
         }
 
+        /// <summary>
+        /// Determine whether this key is a shard, that is, a key restricted to a range of the signatures of its parent.
+        /// </summary>
+        /// <returns>true if it is a shard, false otherwise.</returns>
         public bool IsShard() => m_isShard;
 
         /// <summary>Gets the index limit.</summary>
@@ -447,6 +457,8 @@ namespace Org.BouncyCastle.Pqc.Crypto.Lms
             return result;
         }
 
+        /// <summary>Create a copy of this key.</summary>
+        /// <returns>The copy.</returns>
         protected object Clone()
         {
             return MakeCopy(this);

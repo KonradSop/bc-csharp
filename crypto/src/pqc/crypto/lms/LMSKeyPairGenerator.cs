@@ -3,6 +3,7 @@ using Org.BouncyCastle.Security;
 
 namespace Org.BouncyCastle.Pqc.Crypto.Lms
 {
+    /// <summary>A generator of LMS key pairs.</summary>
     public sealed class LmsKeyPairGenerator
         : IAsymmetricCipherKeyPairGenerator
     {

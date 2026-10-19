@@ -4,6 +4,7 @@ using Org.BouncyCastle.Crypto;
 
 namespace Org.BouncyCastle.Pqc.Crypto.Lms
 {
+    /// <summary>The state for incrementally signing or verifying a message with LMS.</summary>
     public sealed class LmsContext
         : IDigest
     {
