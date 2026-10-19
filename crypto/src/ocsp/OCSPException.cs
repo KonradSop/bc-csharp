@@ -8,21 +8,30 @@ namespace Org.BouncyCastle.Ocsp
     public class OcspException
         : Exception
     {
+        /// <summary>Create a new <see cref="OcspException"/>.</summary>
         public OcspException()
             : base()
         {
         }
 
+        /// <summary>Create a new <see cref="OcspException"/>.</summary>
+        /// <param name="message">The message.</param>
         public OcspException(string message)
             : base(message)
         {
         }
 
+        /// <summary>Create a new <see cref="OcspException"/>.</summary>
+        /// <param name="message">The message.</param>
+        /// <param name="innerException">The inner exception.</param>
         public OcspException(string message, Exception innerException)
             : base(message, innerException)
         {
         }
 
+        /// <summary>Create a new <see cref="OcspException"/>.</summary>
+        /// <param name="info">The info.</param>
+        /// <param name="context">The context.</param>
         protected OcspException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
