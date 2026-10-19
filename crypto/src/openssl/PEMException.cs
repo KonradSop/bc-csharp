@@ -30,6 +30,9 @@ namespace Org.BouncyCastle.OpenSsl
         {
         }
 
+        /// <summary>Create a new <see cref="PemException"/>.</summary>
+        /// <param name="info">The info.</param>
+        /// <param name="context">The context.</param>
         protected PemException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
