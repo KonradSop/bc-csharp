@@ -29,6 +29,9 @@ namespace Org.BouncyCastle.Security
         {
         }
 
+        /// <summary>Create a new <see cref="SignatureException"/>.</summary>
+        /// <param name="info">The info.</param>
+        /// <param name="context">The context.</param>
         protected SignatureException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {

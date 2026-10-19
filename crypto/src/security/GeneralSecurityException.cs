@@ -29,6 +29,9 @@ namespace Org.BouncyCastle.Security
         {
         }
 
+        /// <summary>Create a new <see cref="GeneralSecurityException"/>.</summary>
+        /// <param name="info">The info.</param>
+        /// <param name="context">The context.</param>
         protected GeneralSecurityException(SerializationInfo info, StreamingContext context)
             : base(info, context)
         {
