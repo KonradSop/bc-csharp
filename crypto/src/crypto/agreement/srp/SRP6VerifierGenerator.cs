@@ -33,6 +33,9 @@ namespace Org.BouncyCastle.Crypto.Agreement.Srp
             this.digest = digest;
         }
 
+        /// <summary>Create a new <see cref="Srp6VerifierGenerator"/>.</summary>
+        /// <param name="group">The group.</param>
+        /// <param name="digest">The digest.</param>
         public virtual void Init(Srp6GroupParameters group, IDigest digest)
         {
             Init(group.N, group.G, digest);
