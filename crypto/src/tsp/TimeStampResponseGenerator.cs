@@ -178,6 +178,7 @@ namespace Org.BouncyCastle.Tsp
         /// <param name="additionalExtensions">Extensions to add to the token, or null for none.</param>
         /// <returns>The <see cref="TimeStampResponse"/>.</returns>
         /// <exception cref="TspException">The token or response could not be created.</exception>
+        // TODO[api] Remove '?' from genTime?
         public TimeStampResponse GenerateGrantedResponse(TimeStampRequest request, BigInteger serialNumber,
             DateTime? genTime, string statusString, X509Extensions additionalExtensions)
         {
