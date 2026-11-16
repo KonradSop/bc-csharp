@@ -32,6 +32,7 @@ namespace Org.BouncyCastle.X509
 
         /// <summary>Create an entry for a CRL that is not an indirect CRL.</summary>
         /// <param name="c">The ASN.1 <see cref="CrlEntry"/> object.</param>
+        // TODO[api] Rename to 'crlEntry'
         public X509CrlEntry(CrlEntry c)
         {
             m_crlEntry = c ?? throw new ArgumentNullException(nameof(c));

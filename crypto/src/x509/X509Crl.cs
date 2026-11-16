@@ -76,6 +76,7 @@ namespace Org.BouncyCastle.X509
         /// <summary>Wrap an ASN.1 CertificateList structure.</summary>
         /// <param name="c">The ASN.1 structure.</param>
         /// <exception cref="CrlException">The contents of the CRL are invalid.</exception>
+        // TODO[api] Rename to 'certificateList'
         public X509Crl(CertificateList c)
         {
             m_certificateList = c ?? throw new ArgumentNullException(nameof(c));
